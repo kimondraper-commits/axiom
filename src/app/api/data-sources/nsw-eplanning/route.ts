@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
 
   const { searchParams } = new URL(req.url);
   const council = searchParams.get("council") ?? undefined;
-  const suburb = searchParams.get("suburb") ?? undefined;
+  const suburb = searchParams.get("suburb") ?? searchParams.get("address") ?? undefined;
   const fromDate = searchParams.get("fromDate") ?? undefined;
   const toDate = searchParams.get("toDate") ?? undefined;
   const page = parseInt(searchParams.get("page") ?? "1");
@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
         totalCount: result.totalCount,
         page,
         pageSize,
-        source: "NSW ePlanning Portal API",
+        source: "NSW Planning Portal DAApplicationTracker API",
       },
     });
   } catch (err) {
