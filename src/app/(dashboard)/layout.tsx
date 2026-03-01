@@ -1,19 +1,24 @@
-import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
 import { Sidebar } from "@/components/layout/sidebar";
+import type { SessionUser } from "@/lib/auth";
+
+const GUEST_USER: SessionUser = {
+  id: "guest",
+  email: "guest@citypro.gov",
+  name: "Guest",
+  role: "VIEWER",
+  department: null,
+  image: null,
+};
 
 export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
-  if (!session) redirect("/login");
-
   return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden">
-      <Sidebar user={session.user} />
-      <main className="flex-1 overflow-auto">
+    <div className="flex h-screen overflow-hidden" style={{ background: "var(--void)" }}>
+      <Sidebar user={GUEST_USER} />
+      <main className="flex-1 overflow-auto" style={{ background: "var(--void)" }}>
         {children}
       </main>
     </div>

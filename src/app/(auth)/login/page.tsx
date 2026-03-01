@@ -34,23 +34,53 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-sm bg-white border border-slate-200 rounded-lg shadow-sm p-8">
+    <div
+      className="min-h-screen flex items-center justify-center p-4"
+      style={{ background: "var(--void)" }}
+    >
+      <div
+        className="w-full max-w-sm rounded-lg p-8"
+        style={{ background: "var(--carbon)", border: "1px solid var(--border)", boxShadow: "var(--shadow-md)" }}
+      >
         {/* Logo / Brand */}
         <div className="mb-8 text-center">
-          <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-700 rounded-lg mb-3">
-            <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+          <div
+            className="inline-flex items-center justify-center w-12 h-12 rounded-lg mb-3"
+            style={{ background: "linear-gradient(135deg, var(--gold-dim), var(--gold))" }}
+          >
+            <svg width="28" height="28" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+              <polygon points="60,4 116,60 60,116 4,60" fill="none" stroke="rgba(8,8,12,0.9)" strokeWidth="1.5"/>
+              <polygon points="60,20 100,60 60,100 20,60" fill="none" stroke="rgba(8,8,12,0.7)" strokeWidth="1" opacity="0.6"/>
+              <line x1="60" y1="4" x2="60" y2="116" stroke="rgba(8,8,12,0.5)" strokeWidth="0.5" opacity="0.3"/>
+              <line x1="4" y1="60" x2="116" y2="60" stroke="rgba(8,8,12,0.5)" strokeWidth="0.5" opacity="0.3"/>
+              <circle cx="60" cy="60" r="22" fill="none" stroke="rgba(8,8,12,0.7)" strokeWidth="0.8" opacity="0.4"/>
+              <circle cx="60" cy="60" r="6" fill="rgba(8,8,12,0.9)"/>
             </svg>
           </div>
-          <h1 className="text-xl font-semibold text-slate-900">City Pro</h1>
-          <p className="text-sm text-slate-500 mt-1">Sign in to your planning workspace</p>
+          <h1
+            className="text-xl"
+            style={{
+              fontFamily: "var(--font-syne, 'Syne', sans-serif)",
+              fontWeight: 700,
+              letterSpacing: 5,
+              color: "var(--text-primary)",
+              textTransform: "uppercase",
+            }}
+          >
+            AXIOM
+          </h1>
+          <p className="text-sm mt-1" style={{ color: "var(--text-secondary)" }}>
+            Sign in to your planning workspace
+          </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium mb-1"
+              style={{ color: "var(--text-secondary)", fontFamily: "var(--font-outfit, 'Outfit', sans-serif)" }}
+            >
               Email address
             </label>
             <input
@@ -60,13 +90,17 @@ export default function LoginPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+              className="w-full"
               placeholder="you@cityagency.gov"
             />
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium mb-1"
+              style={{ color: "var(--text-secondary)", fontFamily: "var(--font-outfit, 'Outfit', sans-serif)" }}
+            >
               Password
             </label>
             <input
@@ -76,13 +110,13 @@ export default function LoginPage() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+              className="w-full"
               placeholder="••••••••"
             />
           </div>
 
           {error && (
-            <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2">
+            <p className="text-sm px-3 py-2 rounded-md" style={{ color: "var(--status-error)", background: "rgba(196,90,78,0.1)", border: "1px solid rgba(196,90,78,0.2)" }}>
               {error}
             </p>
           )}
@@ -90,13 +124,30 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-700 text-white py-2 px-4 rounded-md text-sm font-medium hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="w-full py-2.5 px-4 rounded-md text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+            style={{
+              background: "linear-gradient(135deg, var(--gold-dim), var(--gold))",
+              color: "var(--void)",
+              fontFamily: "var(--font-outfit, 'Outfit', sans-serif)",
+              fontWeight: 600,
+              letterSpacing: 1,
+            }}
+            onMouseEnter={(e) => {
+              if (!loading) {
+                (e.currentTarget as HTMLButtonElement).style.background = "linear-gradient(135deg, var(--gold), var(--gold-light))";
+                (e.currentTarget as HTMLButtonElement).style.boxShadow = "var(--shadow-gold)";
+              }
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.background = "linear-gradient(135deg, var(--gold-dim), var(--gold))";
+              (e.currentTarget as HTMLButtonElement).style.boxShadow = "";
+            }}
           >
-            {loading ? "Signing in…" : "Sign in"}
+            {loading ? "Signing in\u2026" : "Sign in"}
           </button>
         </form>
 
-        <p className="mt-6 text-xs text-center text-slate-400">
+        <p className="mt-6 text-xs text-center" style={{ color: "var(--text-ghost)" }}>
           Contact your administrator if you need access.
         </p>
       </div>

@@ -1,124 +1,194 @@
-import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { StatCard } from "@/components/analytics/stat-card";
 import Link from "next/link";
 
-export const metadata = { title: "Overview — City Pro" };
+export const metadata = { title: "Overview — AXIOM" };
 
 async function getStats() {
-  const [projectCount, activeProjects, totalDocuments, pendingComments] =
-    await Promise.all([
-      db.project.count(),
-      db.project.count({ where: { status: "ACTIVE" } }),
-      db.document.count(),
-      db.comment.count({ where: { isPublic: true, isApproved: false } }),
-    ]);
-  return { projectCount, activeProjects, totalDocuments, pendingComments };
+  try {
+    const [projectCount, activeProjects, totalDocuments, pendingComments] =
+      await Promise.all([
+        db.project.count(),
+        db.project.count({ where: { status: "ACTIVE" } }),
+        db.document.count(),
+        db.comment.count({ where: { isPublic: true, isApproved: false } }),
+      ]);
+    return { projectCount, activeProjects, totalDocuments, pendingComments };
+  } catch {
+    return { projectCount: 0, activeProjects: 0, totalDocuments: 0, pendingComments: 0 };
+  }
 }
 
 async function getRecentProjects() {
-  return db.project.findMany({
-    take: 5,
-    orderBy: { updatedAt: "desc" },
-    include: { members: true },
-  });
+  try {
+    return await db.project.findMany({
+      take: 5,
+      orderBy: { updatedAt: "desc" },
+      include: { members: true },
+    });
+  } catch {
+    return [];
+  }
 }
 
+const STATUS_STYLES: Record<string, React.CSSProperties> = {
+  PLANNING: { background: "rgba(200,164,78,0.12)", color: "var(--gold)" },
+  ACTIVE: { background: "rgba(74,158,107,0.12)", color: "var(--status-success)" },
+  ON_HOLD: { background: "rgba(200,164,78,0.1)", color: "var(--gold-dim)" },
+  COMPLETED: { background: "rgba(74,158,107,0.15)", color: "var(--status-success)" },
+  ARCHIVED: { background: "rgba(240,236,228,0.06)", color: "var(--text-ghost)" },
+};
+
 export default async function OverviewPage() {
-  const session = await auth();
   const [stats, recentProjects] = await Promise.all([
     getStats(),
     getRecentProjects(),
   ]);
 
-  const statusColors: Record<string, string> = {
-    PLANNING: "bg-slate-100 text-slate-700",
-    ACTIVE: "bg-blue-100 text-blue-700",
-    ON_HOLD: "bg-yellow-100 text-yellow-700",
-    COMPLETED: "bg-green-100 text-green-700",
-    ARCHIVED: "bg-slate-100 text-slate-500",
-  };
-
   return (
-    <div className="p-8 max-w-6xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-slate-900">
-          Welcome back, {session?.user.name?.split(" ")[0] ?? "Planner"}
-        </h1>
-        <p className="text-slate-500 mt-1 text-sm">
-          {new Date().toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}
-        </p>
-      </div>
+    <>
+      <style>{`
+        .overview-quick-link {
+          display: block;
+          border-radius: 3px;
+          padding: 16px;
+          background: var(--carbon);
+          border: 1px solid var(--border);
+          transition: all 0.3s ease;
+          text-decoration: none;
+          cursor: pointer;
+        }
+        .overview-quick-link:hover {
+          border-color: var(--border-hover);
+          transform: translateY(-1px);
+          box-shadow: var(--shadow-md);
+        }
+        .overview-project-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 12px 20px;
+          transition: background 0.15s ease;
+          text-decoration: none;
+        }
+        .overview-project-row:hover {
+          background: rgba(200, 164, 78, 0.03);
+        }
+      `}</style>
 
-      {/* KPI Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-        <StatCard label="Total Projects" value={stats.projectCount} />
-        <StatCard label="Active Projects" value={stats.activeProjects} highlight />
-        <StatCard label="Documents Filed" value={stats.totalDocuments} />
-        <StatCard
-          label="Pending Comments"
-          value={stats.pendingComments}
-          alert={stats.pendingComments > 0}
-        />
-      </div>
-
-      {/* Quick Links */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-        {[
-          { href: "/maps", label: "Open GIS Map", icon: "🗺️", desc: "View zoning & parcels" },
-          { href: "/analytics", label: "Analytics", icon: "📊", desc: "City-wide dashboards" },
-          { href: "/projects", label: "Projects", icon: "📁", desc: "Manage planning projects" },
-          { href: "/assistant", label: "AI Assistant", icon: "🤖", desc: "Ask a planning question" },
-        ].map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className="bg-white border border-slate-200 rounded-lg p-4 hover:border-blue-300 hover:shadow-sm transition-all"
+      <div className="p-8 max-w-6xl mx-auto">
+        <div className="mb-8">
+          <h1
+            style={{
+              fontFamily: "var(--font-syne, 'Syne', sans-serif)",
+              fontWeight: 600,
+              fontSize: 22,
+              letterSpacing: 1,
+              color: "var(--text-primary)",
+            }}
           >
-            <div className="text-2xl mb-2">{item.icon}</div>
-            <div className="font-medium text-slate-900 text-sm">{item.label}</div>
-            <div className="text-xs text-slate-500 mt-0.5">{item.desc}</div>
-          </Link>
-        ))}
-      </div>
+            Welcome to AXIOM
+          </h1>
+          <p
+            className="mt-1"
+            style={{
+              fontFamily: "var(--font-outfit, 'Outfit', sans-serif)",
+              fontWeight: 300,
+              fontSize: 13,
+              color: "var(--text-ghost)",
+            }}
+          >
+            {new Date().toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}
+          </p>
+        </div>
 
-      {/* Recent Projects */}
-      <div className="bg-white border border-slate-200 rounded-lg">
-        <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
-          <h2 className="font-medium text-slate-900">Recent Projects</h2>
-          <Link href="/projects" className="text-sm text-blue-700 hover:underline">
-            View all
-          </Link>
+        {/* KPI Cards */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+          <StatCard label="Total Projects" value={stats.projectCount} />
+          <StatCard label="Active Projects" value={stats.activeProjects} highlight />
+          <StatCard label="Documents Filed" value={stats.totalDocuments} />
+          <StatCard
+            label="Pending Comments"
+            value={stats.pendingComments}
+            alert={stats.pendingComments > 0}
+          />
         </div>
-        <div className="divide-y divide-slate-100">
-          {recentProjects.length === 0 ? (
-            <p className="px-5 py-6 text-sm text-slate-400 text-center">
-              No projects yet.{" "}
-              <Link href="/projects" className="text-blue-700 hover:underline">
-                Create one
-              </Link>
-            </p>
-          ) : (
-            recentProjects.map((p) => (
-              <Link
-                key={p.id}
-                href={`/projects/${p.id}`}
-                className="flex items-center justify-between px-5 py-3 hover:bg-slate-50 transition-colors"
+
+        {/* Quick Links */}
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-10">
+          {[
+            { href: "/maps", label: "Open GIS Map", icon: "\uD83D\uDDFA\uFE0F", desc: "View zoning & parcels" },
+            { href: "/analytics", label: "Analytics", icon: "\uD83D\uDCCA", desc: "City-wide dashboards" },
+            { href: "/projects", label: "Projects", icon: "\uD83D\uDCC1", desc: "Manage planning projects" },
+            { href: "/assistant", label: "AI Assistant", icon: "\uD83E\uDD16", desc: "Ask a planning question" },
+            { href: "/calculators", label: "Calculators", icon: "\u2211", desc: "Population & impact tools" },
+          ].map((item) => (
+            <Link key={item.href} href={item.href} className="overview-quick-link">
+              <div className="text-2xl mb-2">{item.icon}</div>
+              <div
+                style={{
+                  fontFamily: "var(--font-outfit, 'Outfit', sans-serif)",
+                  fontWeight: 500,
+                  fontSize: 13,
+                  color: "var(--text-primary)",
+                }}
               >
-                <div>
-                  <div className="text-sm font-medium text-slate-900">{p.title}</div>
-                  <div className="text-xs text-slate-500 mt-0.5">
-                    {p.city}{p.district ? ` · ${p.district}` : ""} · {p.members.length} member{p.members.length !== 1 ? "s" : ""}
+                {item.label}
+              </div>
+              <div
+                className="mt-0.5"
+                style={{ fontSize: 11, color: "var(--text-ghost)" }}
+              >
+                {item.desc}
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        {/* Recent Projects */}
+        <div className="rounded-lg" style={{ background: "var(--carbon)", border: "1px solid var(--border)" }}>
+          <div
+            className="px-5 py-4 flex items-center justify-between"
+            style={{ borderBottom: "1px solid var(--border)" }}
+          >
+            <h2 style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 500, color: "var(--text-primary)" }}>Recent Projects</h2>
+            <Link href="/projects" className="text-sm hover:underline" style={{ color: "var(--gold)" }}>
+              View all
+            </Link>
+          </div>
+          <div>
+            {recentProjects.length === 0 ? (
+              <p className="px-5 py-6 text-sm text-center" style={{ color: "var(--text-ghost)" }}>
+                No projects yet.{" "}
+                <Link href="/projects" className="hover:underline" style={{ color: "var(--gold)" }}>
+                  Create one
+                </Link>
+              </p>
+            ) : (
+              recentProjects.map((p) => (
+                <Link
+                  key={p.id}
+                  href={`/projects/${p.id}`}
+                  className="overview-project-row"
+                >
+                  <div>
+                    <div style={{ fontSize: 14, fontWeight: 500, color: "var(--text-primary)" }}>{p.title}</div>
+                    <div className="mt-0.5" style={{ fontSize: 12, color: "var(--text-secondary)" }}>
+                      {p.city}{p.district ? ` \u00B7 ${p.district}` : ""} \u00B7 {p.members.length} member{p.members.length !== 1 ? "s" : ""}
+                    </div>
                   </div>
-                </div>
-                <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusColors[p.status] ?? "bg-slate-100 text-slate-600"}`}>
-                  {p.status.replace("_", " ")}
-                </span>
-              </Link>
-            ))
-          )}
+                  <span
+                    className="text-xs px-2 py-0.5 rounded-full font-medium"
+                    style={STATUS_STYLES[p.status] ?? { background: "rgba(240,236,228,0.06)", color: "var(--text-ghost)" }}
+                  >
+                    {p.status.replace("_", " ")}
+                  </span>
+                </Link>
+              ))
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

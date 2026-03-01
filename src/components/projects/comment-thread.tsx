@@ -25,7 +25,7 @@ interface CommentThreadProps {
 }
 
 function formatDate(date: Date | string) {
-  return new Date(date).toLocaleDateString("en-US", {
+  return new Date(date).toLocaleDateString("en-AU", {
     month: "short", day: "numeric", year: "numeric",
   });
 }
@@ -87,25 +87,25 @@ export function CommentThread({ projectId, comments: initial, currentUserId, can
   }
 
   return (
-    <div className="bg-white border border-slate-200 rounded-lg">
-      <div className="px-5 py-4 border-b border-slate-100">
-        <h2 className="font-medium text-slate-900">Comments ({comments.length})</h2>
+    <div style={{ background: "var(--carbon)", border: "1px solid var(--border)", borderRadius: 3 }}>
+      <div className="px-5 py-4" style={{ borderBottom: "1px solid var(--border)" }}>
+        <h2 style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 500, color: "var(--text-primary)" }}>Comments ({comments.length})</h2>
       </div>
 
       {/* New comment form */}
-      <div className="px-5 py-4 border-b border-slate-100">
+      <div className="px-5 py-4" style={{ borderBottom: "1px solid var(--border)" }}>
         <textarea
           value={body}
           onChange={(e) => setBody(e.target.value)}
           placeholder="Add a comment…"
           rows={3}
-          className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 resize-none"
+          className="w-full resize-none"
         />
         <div className="mt-2 flex justify-end">
           <button
             onClick={() => submitComment()}
             disabled={!body.trim() || submitting}
-            className="bg-blue-700 text-white px-4 py-1.5 rounded text-sm font-medium hover:bg-blue-800 disabled:opacity-50 transition-colors"
+            style={{ background: "linear-gradient(135deg, var(--gold-dim), var(--gold))", color: "var(--void)", padding: "6px 16px", borderRadius: 4, fontSize: 13, fontWeight: 600, opacity: (!body.trim() || submitting) ? 0.5 : 1 }}
           >
             Post Comment
           </button>
@@ -113,37 +113,37 @@ export function CommentThread({ projectId, comments: initial, currentUserId, can
       </div>
 
       {/* Comment list */}
-      <div className="divide-y divide-slate-100">
+      <div>
         {comments.length === 0 ? (
-          <p className="px-5 py-6 text-sm text-slate-400 text-center">No comments yet.</p>
+          <p className="px-5 py-6 text-center" style={{ fontSize: 13, color: "var(--text-ghost)" }}>No comments yet.</p>
         ) : (
           comments.map((comment) => (
-            <div key={comment.id} className="px-5 py-4">
+            <div key={comment.id} className="px-5 py-4" style={{ borderBottom: "1px solid var(--border)" }}>
               <div className="flex items-start justify-between gap-2 mb-1.5">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-sm font-medium text-slate-900">{getAuthorName(comment)}</span>
+                  <span style={{ fontSize: 13, fontWeight: 500, color: "var(--text-primary)" }}>{getAuthorName(comment)}</span>
                   {comment.isPublic && (
-                    <span className="text-xs bg-green-50 text-green-700 px-1.5 py-0.5 rounded">Public</span>
+                    <span style={{ fontSize: 11, background: "rgba(34,197,94,0.12)", color: "#4ade80", padding: "1px 6px", borderRadius: 4 }}>Public</span>
                   )}
                   {comment.isPublic && !comment.isApproved && (
-                    <span className="text-xs bg-yellow-50 text-yellow-700 px-1.5 py-0.5 rounded">Pending</span>
+                    <span style={{ fontSize: 11, background: "rgba(245,158,11,0.12)", color: "#f59e0b", padding: "1px 6px", borderRadius: 4 }}>Pending</span>
                   )}
                 </div>
-                <span className="text-xs text-slate-400 shrink-0">{formatDate(comment.createdAt)}</span>
+                <span style={{ fontSize: 11, color: "var(--text-ghost)" }} className="shrink-0">{formatDate(comment.createdAt)}</span>
               </div>
-              <p className="text-sm text-slate-700 leading-relaxed">{comment.body}</p>
+              <p style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.6 }}>{comment.body}</p>
 
               <div className="mt-2 flex gap-3">
                 <button
                   onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)}
-                  className="text-xs text-slate-400 hover:text-blue-700 transition-colors"
+                  style={{ fontSize: 11, color: "var(--text-ghost)" }}
                 >
                   Reply
                 </button>
                 {canModerate && comment.isPublic && !comment.isApproved && (
                   <button
                     onClick={() => approveComment(comment.id)}
-                    className="text-xs text-green-600 hover:text-green-800 transition-colors font-medium"
+                    style={{ fontSize: 11, color: "#4ade80", fontWeight: 500 }}
                   >
                     Approve
                   </button>
@@ -152,25 +152,25 @@ export function CommentThread({ projectId, comments: initial, currentUserId, can
 
               {/* Reply form */}
               {replyingTo === comment.id && (
-                <div className="mt-3 pl-4 border-l-2 border-slate-100">
+                <div className="mt-3 pl-4" style={{ borderLeft: "2px solid var(--border)" }}>
                   <textarea
                     value={replyBody}
                     onChange={(e) => setReplyBody(e.target.value)}
                     placeholder="Write a reply…"
                     rows={2}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 resize-none"
+                    className="w-full resize-none"
                   />
                   <div className="mt-1.5 flex gap-2 justify-end">
                     <button
                       onClick={() => { setReplyingTo(null); setReplyBody(""); }}
-                      className="text-xs text-slate-400 hover:text-slate-600 px-3 py-1"
+                      style={{ fontSize: 11, color: "var(--text-ghost)", padding: "4px 12px" }}
                     >
                       Cancel
                     </button>
                     <button
                       onClick={() => submitComment(comment.id)}
                       disabled={!replyBody.trim() || submitting}
-                      className="bg-blue-700 text-white px-3 py-1 rounded text-xs font-medium hover:bg-blue-800 disabled:opacity-50"
+                      style={{ background: "linear-gradient(135deg, var(--gold-dim), var(--gold))", color: "var(--void)", padding: "4px 12px", borderRadius: 4, fontSize: 11, fontWeight: 600, opacity: (!replyBody.trim() || submitting) ? 0.5 : 1 }}
                     >
                       Reply
                     </button>
@@ -180,14 +180,14 @@ export function CommentThread({ projectId, comments: initial, currentUserId, can
 
               {/* Replies */}
               {comment.replies.length > 0 && (
-                <div className="mt-3 pl-4 border-l-2 border-slate-100 space-y-3">
+                <div className="mt-3 pl-4 space-y-3" style={{ borderLeft: "2px solid var(--border)" }}>
                   {comment.replies.map((reply) => (
                     <div key={reply.id}>
                       <div className="flex items-center gap-2 mb-0.5">
-                        <span className="text-sm font-medium text-slate-900">{getAuthorName(reply)}</span>
-                        <span className="text-xs text-slate-400">{formatDate(reply.createdAt)}</span>
+                        <span style={{ fontSize: 13, fontWeight: 500, color: "var(--text-primary)" }}>{getAuthorName(reply)}</span>
+                        <span style={{ fontSize: 11, color: "var(--text-ghost)" }}>{formatDate(reply.createdAt)}</span>
                       </div>
-                      <p className="text-sm text-slate-700">{reply.body}</p>
+                      <p style={{ fontSize: 13, color: "var(--text-secondary)" }}>{reply.body}</p>
                     </div>
                   ))}
                 </div>

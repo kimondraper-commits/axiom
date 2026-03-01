@@ -1,26 +1,102 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* ── Core backgrounds ── */
+  --void: #08080c;
+  --carbon: #0e0e14;
+  --slate: #16161f;
+  --graphite: #1e1e2a;
+  --steel: #2a2a38;
+
+  /* ── Gold metallic system ── */
+  --gold: #c8a44e;
+  --gold-light: #dbb85e;
+  --gold-pale: #e8d08a;
+  --gold-dim: #8a7235;
+  --gold-glow: rgba(200, 164, 78, 0.15);
+
+  /* ── Text ── */
+  --text-primary: #f0ece4;
+  --text-secondary: rgba(240, 236, 228, 0.5);
+  --text-ghost: rgba(240, 236, 228, 0.25);
+
+  /* ── Borders ── */
+  --border: rgba(200, 164, 78, 0.08);
+  --border-hover: rgba(200, 164, 78, 0.15);
+  --border-active: rgba(200, 164, 78, 0.25);
+
+  /* ── Status colours ── */
+  --status-success: #4a9e6b;
+  --status-warning: #c8a44e;
+  --status-error: #c45a4e;
+  --status-info: #4a7aaa;
+
+  /* ── Shadows ── */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-gold: 0 0 20px rgba(200, 164, 78, 0.1);
+}
+
+@keyframes scanDown {
+  0%   { top: -280px; }
+  100% { top: 100vh; }
+}
+
+@keyframes toBlueprint {
+  0%   { filter: brightness(0.84) contrast(1.10) saturate(1.08); }
+  12%  { filter: brightness(0.80) contrast(1.14) saturate(0.82); }
+  25%  { filter: brightness(0.74) contrast(1.22) saturate(0.52) sepia(0.15) hue-rotate(80deg); }
+  40%  { filter: brightness(0.66) contrast(1.36) saturate(0.28) sepia(0.42) hue-rotate(140deg); }
+  55%  { filter: brightness(0.58) contrast(1.52) saturate(0.16) sepia(0.65) hue-rotate(168deg); }
+  70%  { filter: brightness(0.52) contrast(1.68) saturate(0.09) sepia(0.82) hue-rotate(182deg); }
+  85%  { filter: brightness(0.48) contrast(1.80) saturate(0.05) sepia(0.92) hue-rotate(190deg); }
+  100% { filter: brightness(0.46) contrast(1.88) saturate(0.04) sepia(0.96) hue-rotate(193deg); }
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-background: var(--void);
+  --color-foreground: var(--text-primary);
+  --font-syne: 'Syne', sans-serif;
+  --font-outfit: 'Outfit', sans-serif;
+  --font-jetbrains: 'JetBrains Mono', monospace;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--void);
+  color: var(--text-primary);
+  font-family: 'Outfit', sans-serif;
+}
+
+/* ── Global dark-mode overrides for form elements ── */
+input, select, textarea {
+  background: var(--slate);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text-primary);
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  padding: 10px 14px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px var(--gold-glow);
+  outline: none;
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--text-ghost);
+}
+
+label {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* ── Checkbox accent ── */
+input[type="checkbox"] {
+  accent-color: var(--gold);
 }

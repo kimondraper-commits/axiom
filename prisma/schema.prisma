@@ -4,7 +4,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 enum Role {
@@ -36,6 +35,13 @@ enum MessageRole {
   assistant
 }
 
+enum ImportStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
 model User {
   id            String    @id @default(cuid())
   email         String    @unique
@@ -54,6 +60,7 @@ model User {
   documents    Document[]
   comments     Comment[]
   chatSessions ChatSession[]
+  dataImports  DataImport[]
 
   @@map("users")
 }
@@ -113,10 +120,29 @@ model Project {
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 
-  members      ProjectMember[]
-  documents    Document[]
-  comments     Comment[]
-  chatSessions ChatSession[]
+  lga               String?
+  projectType       String?
+  applicantName     String?
+  applicantEmail    String?
+  lodgementDate     DateTime?
+  dwellings         Int?
+  commercialGfa     Float?
+  buildingHeight    Float?
+  storeys           Int?
+  carParking        Int?
+  siteAreaHa        Float?
+  constructionCostM Float?
+  greenSpaceHa      Float?
+  nswStatus         String?
+
+  members          ProjectMember[]
+  documents        Document[]
+  comments         Comment[]
+  chatSessions     ChatSession[]
+  complianceItems  ComplianceItem[]
+  milestones       TimelineMilestone[]
+  stakeholders     ProjectStakeholder[]
+  submissions      CommunitySubmission[]
 
   @@map("projects")
 }
@@ -142,6 +168,7 @@ model Document {
   s3Key        String
   fileType     String
   fileSize     Int?
+  category     String?
   version      Int      @default(1)
   uploadedById String
   createdAt    DateTime @default(now())
@@ -213,4 +240,85 @@ model ChatMessage {
   session ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
 
   @@map("chat_messages")
+}
+
+model ComplianceItem {
+  id        String   @id @default(cuid())
+  projectId String
+  label     String
+  checked   Boolean  @default(false)
+  notes     String?  @db.Text
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("compliance_items")
+}
+
+model TimelineMilestone {
+  id              String    @id @default(cuid())
+  projectId       String
+  name            String
+  milestoneStatus String    @default("upcoming")
+  dueDate         DateTime?
+  completedDate   DateTime?
+  notes           String?   @db.Text
+  sortOrder       Int       @default(0)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  project         Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("timeline_milestones")
+}
+
+model ProjectStakeholder {
+  id           String   @id @default(cuid())
+  projectId    String
+  name         String
+  role         String
+  email        String?
+  phone        String?
+  organisation String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("project_stakeholders")
+}
+
+model CommunitySubmission {
+  id            String   @id @default(cuid())
+  projectId     String
+  submitterName String?
+  dateReceived  DateTime @default(now())
+  keyIssues     String?  @db.Text
+  response      String?  @db.Text
+  status        String   @default("pending")
+  supporting    Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  project       Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("community_submissions")
+}
+
+model DataImport {
+  id              String       @id @default(cuid())
+  filename        String
+  fileType        String
+  rowCount        Int
+  mappedFields    Json
+  status          ImportStatus @default(COMPLETED)
+  importedById    String
+  projectsCreated Int          @default(0)
+  projectsUpdated Int          @default(0)
+  errorCount      Int          @default(0)
+  errorLog        Json?
+  calcSummary     Json?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  importedBy      User         @relation(fields: [importedById], references: [id])
+
+  @@map("data_imports")
 }

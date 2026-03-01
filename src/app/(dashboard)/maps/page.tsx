@@ -1,18 +1,17 @@
 import { db } from "@/lib/db";
-import dynamic from "next/dynamic";
+import { MapLoader } from "@/components/maps/map-loader";
 
-export const metadata = { title: "GIS Maps — City Pro" };
-
-const MapContainer = dynamic(
-  () => import("@/components/maps/map-container"),
-  { ssr: false, loading: () => <div className="flex-1 bg-slate-200 animate-pulse" /> }
-);
+export const metadata = { title: "GIS Maps — AXIOM" };
 
 async function getLayers() {
-  return db.mapLayer.findMany({
-    where: { isActive: true },
-    orderBy: { sortOrder: "asc" },
-  });
+  try {
+    return await db.mapLayer.findMany({
+      where: { isActive: true },
+      orderBy: { sortOrder: "asc" },
+    });
+  } catch {
+    return [];
+  }
 }
 
 export default async function MapsPage() {
@@ -20,7 +19,7 @@ export default async function MapsPage() {
 
   return (
     <div className="flex h-full">
-      <MapContainer layers={layers} />
+      <MapLoader layers={layers} />
     </div>
   );
 }

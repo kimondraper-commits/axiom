@@ -1,0 +1,4 @@
+title,address,city,lga,projectType,nswStatus,applicantName,applicantEmail,lodgementDate,dwellings,commercialGfa,buildingHeight,storeys,carParking,siteAreaHa,constructionCostM,greenSpaceHa,latitude,longitude
+12 Smith Street Residential,12 Smith Street,Parramatta,Parramatta,Residential — High Density,Under Assessment,Smith Developments,smith@example.com,2024-03-15,120,0,45,12,80,0.45,28.5,0.08,-33.8151,151.0007
+Westfield Mixed Use Redevelopment,100 Market Street,Sydney,City of Sydney,Mixed-Use,Approved,Urban Capital Group,info@urbancapital.com.au,2023-11-01,200,5000,65,18,150,1.2,85.0,0.15,-33.8688,151.2093
+Blacktown Community Hub,55 Main Street,Blacktown,Blacktown,Community / Civic,Pre-lodgement,Blacktown City Council,planning@blacktown.nsw.gov.au,2024-06-20,0,2500,12,3,45,0.8,15.0,0.25,-33.7667,150.9167

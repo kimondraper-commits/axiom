@@ -1,8 +1,9 @@
 import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { ChatPanel } from "@/components/assistant/chat-panel";
 
-export const metadata = { title: "AI Planning Assistant — City Pro" };
+export const metadata = { title: "AI Planning Assistant — AXIOM" };
 
 export default async function AssistantPage({
   searchParams,
@@ -11,6 +12,7 @@ export default async function AssistantPage({
 }) {
   const { projectId, sessionId } = await searchParams;
   const session = await auth();
+  if (!session?.user?.id) redirect("/login");
 
   let project = null;
   if (projectId) {
@@ -23,7 +25,7 @@ export default async function AssistantPage({
   let existingMessages: Array<{ role: string; content: string }> = [];
   if (sessionId) {
     const chatSession = await db.chatSession.findUnique({
-      where: { id: sessionId, userId: session!.user.id },
+      where: { id: sessionId, userId: session.user.id },
       include: { messages: { orderBy: { createdAt: "asc" } } },
     });
     if (chatSession) {
@@ -37,14 +39,14 @@ export default async function AssistantPage({
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="border-b border-slate-200 px-6 py-4 bg-white flex items-center gap-3">
-        <div className="w-8 h-8 bg-blue-700 rounded-lg flex items-center justify-center">
-          <span className="text-white text-sm">AI</span>
+      <div className="px-6 py-4 flex items-center gap-3" style={{ borderBottom: "1px solid var(--border)", background: "var(--carbon)" }}>
+        <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "linear-gradient(135deg, var(--gold-dim), var(--gold))" }}>
+          <span style={{ color: "var(--void)", fontFamily: "var(--font-syne, 'Syne', sans-serif)", fontWeight: 700, fontSize: 12 }}>AI</span>
         </div>
         <div>
-          <h1 className="font-medium text-slate-900">AI Planning Assistant</h1>
+          <h1 style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 500, color: "var(--text-primary)" }}>AI Planning Assistant</h1>
           {project && (
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p style={{ fontSize: 11, color: "var(--text-ghost)", marginTop: 2 }}>
               Context: {project.title} · {project.city}
             </p>
           )}
@@ -52,7 +54,7 @@ export default async function AssistantPage({
       </div>
 
       <ChatPanel
-        userId={session!.user.id}
+        userId={session.user.id}
         projectId={project?.id}
         initialMessages={existingMessages}
         sessionId={sessionId}

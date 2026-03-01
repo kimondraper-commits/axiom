@@ -6,24 +6,48 @@ interface StatCardProps {
 }
 
 export function StatCard({ label, value, highlight, alert }: StatCardProps) {
+  const borderColor = alert
+    ? "rgba(196,90,78,0.3)"
+    : highlight
+    ? "var(--border-active)"
+    : "var(--border)";
+
+  const valueColor = alert
+    ? "var(--status-error)"
+    : highlight
+    ? "var(--gold)"
+    : "var(--text-primary)";
+
   return (
     <div
-      className={`rounded-lg border p-5 ${
-        alert
-          ? "bg-red-50 border-red-200"
-          : highlight
-          ? "bg-blue-50 border-blue-200"
-          : "bg-white border-slate-200"
-      }`}
+      style={{
+        background: "var(--carbon)",
+        border: `1px solid ${borderColor}`,
+        borderRadius: 3,
+        padding: "16px 20px",
+        transition: "border-color 0.3s ease",
+      }}
     >
-      <p className={`text-xs font-medium uppercase tracking-wide mb-1 ${
-        alert ? "text-red-500" : highlight ? "text-blue-600" : "text-slate-500"
-      }`}>
+      <p
+        style={{
+          fontFamily: "var(--font-jetbrains, 'JetBrains Mono', monospace)",
+          fontSize: 10,
+          letterSpacing: 2,
+          textTransform: "uppercase",
+          color: "var(--gold-dim)",
+          marginBottom: 6,
+        }}
+      >
         {label}
       </p>
-      <p className={`text-3xl font-semibold ${
-        alert ? "text-red-700" : highlight ? "text-blue-700" : "text-slate-900"
-      }`}>
+      <p
+        style={{
+          fontFamily: "var(--font-outfit, 'Outfit', sans-serif)",
+          fontWeight: 600,
+          fontSize: 28,
+          color: valueColor,
+        }}
+      >
         {value}
       </p>
     </div>

@@ -1,0 +1,83 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [151.2093, -33.8688]
+      },
+      "properties": {
+        "title": "Sydney CBD Tower",
+        "address": "1 Martin Place",
+        "city": "Sydney",
+        "lga": "City of Sydney",
+        "projectType": "Residential — High Density",
+        "nswStatus": "Under Assessment",
+        "applicantName": "Sydney Tower Group",
+        "applicantEmail": "da@sydneytower.com.au",
+        "lodgementDate": "2024-01-15",
+        "dwellings": 250,
+        "commercialGfa": 3000,
+        "buildingHeight": 120,
+        "storeys": 35,
+        "carParking": 100,
+        "siteAreaHa": 0.8,
+        "constructionCostM": 95,
+        "greenSpaceHa": 0.05
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [151.0007, -33.8151]
+      },
+      "properties": {
+        "title": "Parramatta River Precinct",
+        "address": "45 Phillip Street",
+        "city": "Parramatta",
+        "lga": "Parramatta",
+        "projectType": "Mixed-Use",
+        "nswStatus": "Approved",
+        "applicantName": "Western Sydney Developments",
+        "applicantEmail": "planning@wsd.com.au",
+        "lodgementDate": "2023-08-20",
+        "dwellings": 180,
+        "commercialGfa": 4500,
+        "buildingHeight": 65,
+        "storeys": 18,
+        "carParking": 120,
+        "siteAreaHa": 1.5,
+        "constructionCostM": 75,
+        "greenSpaceHa": 0.2
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [150.9167, -33.7667]
+      },
+      "properties": {
+        "title": "Blacktown Town Centre",
+        "address": "10 Flushcombe Road",
+        "city": "Blacktown",
+        "lga": "Blacktown",
+        "projectType": "Residential — Medium Density",
+        "nswStatus": "Pre-lodgement",
+        "applicantName": "Blacktown Housing Co",
+        "applicantEmail": "contact@bthc.com.au",
+        "lodgementDate": "2024-05-30",
+        "dwellings": 95,
+        "commercialGfa": 0,
+        "buildingHeight": 28,
+        "storeys": 8,
+        "carParking": 55,
+        "siteAreaHa": 0.6,
+        "constructionCostM": 42,
+        "greenSpaceHa": 0.12
+      }
+    }
+  ]
+}

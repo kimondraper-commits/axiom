@@ -3,7 +3,7 @@ import { StatCard } from "@/components/analytics/stat-card";
 import { db } from "@/lib/db";
 import Link from "next/link";
 
-export const metadata = { title: "Analytics — City Pro" };
+export const metadata = { title: "Analytics — AXIOM" };
 
 async function getCityStats() {
   const [total, active, completed, planning] = await Promise.all([
@@ -21,8 +21,8 @@ export default async function AnalyticsPage() {
   return (
     <div className="p-8 max-w-6xl mx-auto">
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-slate-900">Analytics Dashboard</h1>
-        <p className="text-slate-500 mt-1 text-sm">City-wide planning metrics and data</p>
+        <h1 style={{ fontFamily: "var(--font-syne, 'Syne', sans-serif)", fontWeight: 600, fontSize: 22, letterSpacing: 1, color: "var(--text-primary)" }}>Analytics Dashboard</h1>
+        <p style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 300, fontSize: 13, color: "var(--text-ghost)", marginTop: 4 }}>City-wide planning metrics and data</p>
       </div>
 
       {/* KPI Row */}
@@ -44,14 +44,14 @@ export default async function AnalyticsPage() {
           <Link
             key={ds.id}
             href={`/analytics/${ds.id}`}
-            className="bg-white border border-slate-200 rounded-lg p-6 hover:border-blue-300 hover:shadow-sm transition-all"
+            style={{ background: "var(--carbon)", border: "1px solid var(--border)", borderRadius: 3, padding: 24 }}
           >
             <div className="flex items-start justify-between mb-3">
-              <h3 className="font-medium text-slate-900">{ds.label}</h3>
-              <span className="text-xs px-2 py-0.5 bg-blue-50 text-blue-700 rounded-full font-medium">Live</span>
+              <h3 style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 500, color: "var(--text-primary)" }}>{ds.label}</h3>
+              <span style={{ fontSize: 11, padding: "2px 8px", background: "var(--gold-glow)", color: "var(--gold)", borderRadius: 9999, fontWeight: 500 }}>Live</span>
             </div>
-            <p className="text-sm text-slate-500">{ds.desc}</p>
-            <div className="mt-4 text-xs text-blue-700 font-medium">View dashboard →</div>
+            <p style={{ fontSize: 13, color: "var(--text-secondary)" }}>{ds.desc}</p>
+            <div style={{ marginTop: 16, fontSize: 11, color: "var(--gold)", fontWeight: 500 }}>View dashboard →</div>
           </Link>
         ))}
       </div>

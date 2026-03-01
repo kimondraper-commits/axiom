@@ -2,7 +2,8 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { db } from "@/lib/db";
-import { Role } from "@prisma/client";
+import { authConfig } from "@/lib/auth.config";
+import type { Role } from "@prisma/client";
 import { z } from "zod";
 import crypto from "crypto";
 
@@ -35,11 +36,9 @@ function hashPassword(password: string): string {
 }
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  ...authConfig,
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },
-  pages: {
-    signIn: "/login",
-  },
   providers: [
     Credentials({
       credentials: {
@@ -72,8 +71,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.role = user.role;
-        token.department = user.department;
+        token.role = (user as any).role;
+        token.department = (user as any).department;
       }
       return token;
     },

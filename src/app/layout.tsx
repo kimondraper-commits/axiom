@@ -1,12 +1,27 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Syne, Outfit, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const syne = Syne({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-syne",
+});
+const outfit = Outfit({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
+  variable: "--font-outfit",
+});
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
+  variable: "--font-jetbrains",
+});
 
 export const metadata: Metadata = {
-  title: "City Pro — Planning Platform",
+  title: "AXIOM — Planning Platform",
   description: "Professional GIS maps, AI planning assistant, and project collaboration for city planners.",
+  icons: { icon: "/favicon.svg" },
 };
 
 export default function RootLayout({
@@ -16,7 +31,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased bg-slate-50 text-slate-900`}>
+      <body
+        className={`${syne.variable} ${outfit.variable} ${jetbrainsMono.variable} antialiased`}
+      >
         {children}
       </body>
     </html>

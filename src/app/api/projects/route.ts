@@ -29,6 +29,20 @@ const projectSchema = z.object({
   budget: z.number().positive().optional(),
   startDate: z.string().datetime().optional(),
   endDate: z.string().datetime().optional(),
+  nswStatus: z.string().optional(),
+  lga: z.string().optional(),
+  projectType: z.string().optional(),
+  applicantName: z.string().optional(),
+  applicantEmail: z.string().email().optional().or(z.literal("")),
+  lodgementDate: z.string().datetime().optional(),
+  dwellings: z.number().int().nonnegative().optional(),
+  commercialGfa: z.number().nonnegative().optional(),
+  buildingHeight: z.number().nonnegative().optional(),
+  storeys: z.number().int().nonnegative().optional(),
+  carParking: z.number().int().nonnegative().optional(),
+  siteAreaHa: z.number().nonnegative().optional(),
+  constructionCostM: z.number().nonnegative().optional(),
+  greenSpaceHa: z.number().nonnegative().optional(),
 });
 
 export async function POST(req: NextRequest) {

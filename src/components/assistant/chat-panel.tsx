@@ -105,22 +105,22 @@ export function ChatPanel({ userId, projectId, initialMessages, sessionId: initi
       <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
         {messages.length === 0 && (
           <div className="text-center py-16">
-            <div className="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-3">
-              <span className="text-blue-700 text-xl">AI</span>
+            <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3" style={{ background: "var(--gold-glow)", border: "1px solid var(--border-active)" }}>
+              <span style={{ color: "var(--gold)", fontFamily: "var(--font-syne, 'Syne', sans-serif)", fontWeight: 600, fontSize: 16 }}>AI</span>
             </div>
-            <p className="text-slate-500 text-sm">
+            <p style={{ fontSize: 13, color: "var(--text-secondary)" }}>
               Ask any question about urban planning, zoning, regulations, or your project.
             </p>
             <div className="mt-4 flex flex-wrap gap-2 justify-center">
               {[
                 "What are typical setback requirements for R-2 zones?",
-                "Summarize CEQA review steps",
+                "Summarise EP&A Act review steps",
                 "What makes a good traffic impact study?",
               ].map((q) => (
                 <button
                   key={q}
                   onClick={() => setInput(q)}
-                  className="text-xs bg-slate-100 hover:bg-blue-50 text-slate-600 hover:text-blue-700 px-3 py-1.5 rounded-full transition-colors"
+                  style={{ fontSize: 11, background: "var(--slate)", color: "var(--text-secondary)", padding: "6px 12px", borderRadius: 9999, border: "1px solid var(--border)" }}
                 >
                   {q}
                 </button>
@@ -135,14 +135,14 @@ export function ChatPanel({ userId, projectId, initialMessages, sessionId: initi
             className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
           >
             <div
-              className={`max-w-[80%] px-4 py-3 rounded-xl text-sm leading-relaxed whitespace-pre-wrap ${
-                msg.role === "user"
-                  ? "bg-blue-700 text-white rounded-br-sm"
-                  : "bg-white border border-slate-200 text-slate-800 rounded-bl-sm"
-              }`}
+              className="max-w-[80%] px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap"
+              style={msg.role === "user"
+                ? { background: "linear-gradient(135deg, var(--gold-dim), var(--gold))", color: "var(--void)", borderRadius: "12px 12px 2px 12px" }
+                : { background: "var(--slate)", border: "1px solid var(--border)", color: "var(--text-primary)", borderRadius: "12px 12px 12px 2px" }
+              }
             >
               {msg.content || (loading && i === messages.length - 1 ? (
-                <span className="flex gap-1">
+                <span className="flex gap-1" style={{ color: "var(--gold)" }}>
                   <span className="animate-bounce">●</span>
                   <span className="animate-bounce" style={{ animationDelay: "0.1s" }}>●</span>
                   <span className="animate-bounce" style={{ animationDelay: "0.2s" }}>●</span>
@@ -156,7 +156,7 @@ export function ChatPanel({ userId, projectId, initialMessages, sessionId: initi
       </div>
 
       {/* Input form */}
-      <div className="border-t border-slate-200 bg-white px-6 py-4">
+      <div className="px-6 py-4" style={{ borderTop: "1px solid var(--border)", background: "var(--carbon)" }}>
         <form onSubmit={sendMessage} className="flex gap-3">
           <input
             type="text"
@@ -164,12 +164,22 @@ export function ChatPanel({ userId, projectId, initialMessages, sessionId: initi
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask a planning question…"
             disabled={loading}
-            className="flex-1 px-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent disabled:opacity-60"
+            className="flex-1"
+            style={{ opacity: loading ? 0.6 : 1 }}
           />
           <button
             type="submit"
             disabled={loading || !input.trim()}
-            className="bg-blue-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            style={{
+              background: "linear-gradient(135deg, var(--gold-dim), var(--gold))",
+              color: "var(--void)",
+              padding: "10px 20px",
+              borderRadius: 8,
+              fontSize: 13,
+              fontWeight: 600,
+              opacity: (loading || !input.trim()) ? 0.5 : 1,
+              cursor: (loading || !input.trim()) ? "not-allowed" : "pointer",
+            }}
           >
             Send
           </button>
