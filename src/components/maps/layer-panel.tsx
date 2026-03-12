@@ -83,12 +83,12 @@ export function LayerPanel({
   return (
     <div className="w-64 shrink-0 flex flex-col overflow-y-auto" style={{ background: "var(--carbon)", borderRight: "1px solid var(--border)" }}>
       <div className="px-4 py-4" style={{ borderBottom: "1px solid var(--border)" }}>
-        <h2 style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontSize: 13, fontWeight: 600, color: "var(--text-primary)" }}>Map Layers</h2>
+        <h2 style={{ fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontSize: 13, fontWeight: 600, color: "var(--text-primary)" }}>Map Layers</h2>
       </div>
 
       {/* Basemap switcher */}
       <div className="px-4 py-3" style={{ borderBottom: "1px solid var(--border)" }}>
-        <p style={{ fontFamily: "var(--font-jetbrains, 'JetBrains Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-dim)", marginBottom: 8 }}>Basemap</p>
+        <p style={{ fontFamily: "var(--font-jetbrains, 'PT Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-dim)", marginBottom: 8 }}>Basemap</p>
         <div className="space-y-1">
           {basemaps.map((b) => (
             <button
@@ -110,7 +110,7 @@ export function LayerPanel({
 
       {/* Data layers grouped by category */}
       <div className="px-4 py-3 space-y-4">
-        <p style={{ fontFamily: "var(--font-jetbrains, 'JetBrains Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-dim)" }}>Data Layers</p>
+        <p style={{ fontFamily: "var(--font-jetbrains, 'PT Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-dim)" }}>Data Layers</p>
         {layers.length === 0 ? (
           <p style={{ fontSize: 11, color: "var(--text-ghost)", padding: "8px 0" }}>No layers configured.</p>
         ) : (
@@ -163,14 +163,14 @@ export function LayerPanel({
           className="w-full flex items-center justify-between px-4 py-3 transition-colors"
           style={{ fontSize: 11, color: "var(--text-ghost)" }}
         >
-          <span style={{ fontFamily: "var(--font-jetbrains, 'JetBrains Mono', monospace)", letterSpacing: 2, textTransform: "uppercase" }}>Popup Field Key</span>
+          <span style={{ fontFamily: "var(--font-jetbrains, 'PT Mono', monospace)", letterSpacing: 2, textTransform: "uppercase" }}>Popup Field Key</span>
           <span style={{ color: "var(--text-ghost)" }}>{keyOpen ? "▲" : "▼"}</span>
         </button>
         {keyOpen && (
           <div className="px-4 pb-4 space-y-3">
             {POPUP_KEY.map(({ section, fields }) => (
               <div key={section}>
-                <p style={{ fontFamily: "var(--font-jetbrains, 'JetBrains Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-dim)", marginBottom: 6 }}>{section}</p>
+                <p style={{ fontFamily: "var(--font-jetbrains, 'PT Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-dim)", marginBottom: 6 }}>{section}</p>
                 <div className="space-y-2">
                   {fields.map(({ label, desc }) => (
                     <div key={label}>

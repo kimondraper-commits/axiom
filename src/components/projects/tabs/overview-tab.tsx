@@ -86,7 +86,7 @@ export function OverviewTab({
       {/* NSW Status + KPIs */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <div style={{ background: "var(--carbon)", border: "1px solid var(--border)", borderRadius: 3, padding: 16 }}>
-          <div style={{ fontFamily: "var(--font-jetbrains, 'JetBrains Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-dim)", marginBottom: 8 }}>NSW Status</div>
+          <div style={{ fontFamily: "var(--font-jetbrains, 'PT Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-dim)", marginBottom: 8 }}>NSW Status</div>
           {canEdit ? (
             <select
               value={project.nswStatus ?? ""}
@@ -119,14 +119,14 @@ export function OverviewTab({
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div style={{ background: "var(--carbon)", border: "1px solid var(--border)", borderRadius: 3, padding: 16 }}>
-          <div style={{ fontFamily: "var(--font-jetbrains, 'JetBrains Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-dim)", marginBottom: 4 }}>Open Compliance Items</div>
-          <div style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 600, fontSize: 24, color: "var(--text-primary)" }}>{openCompliance}</div>
+          <div style={{ fontFamily: "var(--font-jetbrains, 'PT Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-dim)", marginBottom: 4 }}>Open Compliance Items</div>
+          <div style={{ fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 600, fontSize: 24, color: "var(--text-primary)" }}>{openCompliance}</div>
           <div style={{ fontSize: 11, color: "var(--text-ghost)" }}>of {project.complianceItems.length} total</div>
         </div>
 
         <div style={{ background: "var(--carbon)", border: "1px solid var(--border)", borderRadius: 3, padding: 16 }}>
-          <div style={{ fontFamily: "var(--font-jetbrains, 'JetBrains Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-dim)", marginBottom: 4 }}>Days Since Lodgement</div>
-          <div style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 600, fontSize: 24, color: "var(--text-primary)" }}>{daysElapsed !== null ? daysElapsed : "—"}</div>
+          <div style={{ fontFamily: "var(--font-jetbrains, 'PT Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-dim)", marginBottom: 4 }}>Days Since Lodgement</div>
+          <div style={{ fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 600, fontSize: 24, color: "var(--text-primary)" }}>{daysElapsed !== null ? daysElapsed : "—"}</div>
           <div style={{ fontSize: 11, color: "var(--text-ghost)" }}>
             {project.lodgementDate ? new Date(project.lodgementDate).toLocaleDateString("en-AU") : "No lodgement date set"}
           </div>
@@ -135,7 +135,7 @@ export function OverviewTab({
 
       {/* Project Details */}
       <div style={{ background: "var(--carbon)", border: "1px solid var(--border)", borderRadius: 3, padding: 20 }}>
-        <h3 style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 500, color: "var(--text-primary)", marginBottom: 16 }}>Project Details</h3>
+        <h3 style={{ fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 500, color: "var(--text-primary)", marginBottom: 16 }}>Project Details</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3" style={{ fontSize: 13 }}>
           {[
             ["Address", project.address],
@@ -163,7 +163,7 @@ export function OverviewTab({
 
       {/* Team */}
       <div style={{ background: "var(--carbon)", border: "1px solid var(--border)", borderRadius: 3, padding: 20 }}>
-        <h3 style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 500, color: "var(--text-primary)", marginBottom: 12 }}>Team ({project.members.length})</h3>
+        <h3 style={{ fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 500, color: "var(--text-primary)", marginBottom: 12 }}>Team ({project.members.length})</h3>
         <ul className="space-y-2">
           {project.members.map((m) => (
             <li key={m.id} className="flex items-center justify-between" style={{ fontSize: 13 }}>
@@ -180,8 +180,8 @@ export function OverviewTab({
 function KpiCard({ label, value, sub }: { label: string; value: string; sub: string }) {
   return (
     <div style={{ background: "var(--carbon)", border: "1px solid var(--border)", borderRadius: 3, padding: 16 }}>
-      <div style={{ fontFamily: "var(--font-jetbrains, 'JetBrains Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-dim)", marginBottom: 4 }}>{label}</div>
-      <div style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 600, fontSize: 24, color: "var(--text-primary)" }}>{value}</div>
+      <div style={{ fontFamily: "var(--font-jetbrains, 'PT Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-dim)", marginBottom: 4 }}>{label}</div>
+      <div style={{ fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 600, fontSize: 24, color: "var(--text-primary)" }}>{value}</div>
       <div style={{ fontSize: 11, color: "var(--text-ghost)" }}>{sub}</div>
     </div>
   );

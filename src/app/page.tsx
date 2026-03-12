@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { LogoNav, LogoPrimary } from "@/components/ui/logo";
+import BlurText from "@/components/ui/react-bits/blur-text";
 
 type Phase = "photo" | "transitioning" | "blueprint";
 
@@ -151,18 +152,32 @@ export default function WelcomePage() {
         >
           {isBlueprint ? (
             <div className="mb-6">
-              <LogoNav />
+              <LogoNav light />
             </div>
           ) : (
-            <p className="text-xs uppercase tracking-[0.35em] mb-5" style={{ fontFamily: "var(--font-jetbrains, 'JetBrains Mono', monospace)", color: "var(--gold-dim)" }}>
+            <p className="text-xs uppercase tracking-[0.35em] mb-5" style={{ fontFamily: "var(--font-jetbrains, 'PT Mono', monospace)", color: "var(--gold-dim)" }}>
               Sydney NSW, Australia · 33°51′S 151°12′E
             </p>
           )}
-          <h1 className="text-6xl sm:text-7xl font-bold drop-shadow-2xl leading-tight" style={{ fontFamily: "var(--font-syne, 'Syne', sans-serif)", color: "var(--text-primary)" }}>Welcome,</h1>
-          <h1 className="text-6xl sm:text-7xl font-bold drop-shadow-2xl leading-tight mb-5" style={{ fontFamily: "var(--font-syne, 'Syne', sans-serif)", color: "var(--gold)", transition: "color 3.5s ease" }}>
-            Kimon.
-          </h1>
-          <p className="text-lg mb-8 max-w-sm" style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 300, color: "var(--text-secondary)", transition: "color 3s ease" }}>
+          <div style={{ fontFamily: "var(--font-instrument, 'Open Sans', sans-serif)", color: "#FFFFFF" }}>
+            <BlurText
+              text="Welcome,"
+              delay={75}
+              animateBy="letters"
+              direction="bottom"
+              className="text-6xl sm:text-7xl font-bold drop-shadow-2xl leading-tight justify-center"
+            />
+          </div>
+          <div style={{ fontFamily: "var(--font-instrument, 'Open Sans', sans-serif)", color: "var(--gold)", transition: "color 3.5s ease" }}>
+            <BlurText
+              text="Kimon."
+              delay={75}
+              animateBy="letters"
+              direction="bottom"
+              className="text-6xl sm:text-7xl font-bold drop-shadow-2xl leading-tight mb-5 justify-center"
+            />
+          </div>
+          <p className="text-lg mb-8 max-w-sm" style={{ fontFamily: "var(--font-dm, 'Open Sans', sans-serif)", fontWeight: 300, color: "#9CA3AF", transition: "color 3s ease" }}>
             {isBlueprint ? "Your city planning workspace is ready." : "Initialising AXIOM\u2026"}
           </p>
 
@@ -173,9 +188,9 @@ export default function WelcomePage() {
               className="inline-flex items-center gap-3 px-8 py-3.5 rounded-xl text-base transition-all"
               style={{
                 background: "linear-gradient(135deg, var(--gold-dim), var(--gold))",
-                color: "var(--void)",
+                color: "#08080c",
                 boxShadow: "0 0 48px rgba(200,164,78,0.25)",
-                fontFamily: "var(--font-outfit, 'Outfit', sans-serif)",
+                fontFamily: "var(--font-dm, 'Open Sans', sans-serif)",
                 fontWeight: 600,
                 letterSpacing: 1,
               }}
@@ -183,7 +198,7 @@ export default function WelcomePage() {
               Enter AXIOM
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
             </Link>
-            <a href="#about" className="text-sm transition-colors underline underline-offset-4" style={{ color: "var(--text-ghost)" }}>
+            <a href="#about" className="text-sm transition-colors underline underline-offset-4" style={{ color: "#6B7280" }}>
               Learn more \u2193
             </a>
           </div>
@@ -194,8 +209,8 @@ export default function WelcomePage() {
           className="absolute bottom-5 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-1"
           style={{ opacity: showCTA ? 0.5 : 0, transition: "opacity 1.5s ease" }}
         >
-          <span style={{ fontSize: 10, fontFamily: "var(--font-jetbrains, 'JetBrains Mono', monospace)", letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--text-ghost)" }}>scroll</span>
-          <svg className="w-5 h-5 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ color: "var(--text-ghost)" }}>
+          <span style={{ fontSize: 10, fontFamily: "var(--font-jetbrains, 'PT Mono', monospace)", letterSpacing: "0.2em", textTransform: "uppercase", color: "#6B7280" }}>scroll</span>
+          <svg className="w-5 h-5 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ color: "#6B7280" }}>
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
           </svg>
         </div>
@@ -204,16 +219,16 @@ export default function WelcomePage() {
       {/* ════════════════════════════════════════════════
           SECTION 2 — Platform overview (scrollable)
       ════════════════════════════════════════════════ */}
-      <div id="about" style={{ background: "var(--void)" }}>
+      <div id="about" style={{ background: "#08080c" }}>
 
         {/* Nav */}
-        <header className="sticky top-0 z-40" style={{ background: "var(--carbon)", borderBottom: "1px solid var(--border)" }}>
+        <header className="sticky top-0 z-40" style={{ background: "#0e0e14", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
           <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-            <LogoNav />
+            <LogoNav light />
             <Link
               href="/overview"
               className="px-4 py-2 rounded-md text-sm transition-colors"
-              style={{ background: "linear-gradient(135deg, var(--gold-dim), var(--gold))", color: "var(--void)", fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 600 }}
+              style={{ background: "linear-gradient(135deg, var(--gold-dim), var(--gold))", color: "#08080c", fontFamily: "var(--font-dm, 'Open Sans', sans-serif)", fontWeight: 600 }}
             >
               Open Platform
             </Link>
@@ -221,16 +236,16 @@ export default function WelcomePage() {
         </header>
 
         {/* Hero text */}
-        <section style={{ background: "var(--carbon)", borderBottom: "1px solid var(--border)" }}>
+        <section style={{ background: "#0e0e14", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
           <div className="max-w-6xl mx-auto px-6 py-20 flex flex-col items-center text-center">
             {/* Primary logo hero mark */}
-            <div className="mb-10 overflow-hidden" style={{ background: "var(--void)", borderRadius: 16, padding: "32px 40px", border: "1px solid var(--border)" }}>
-              <LogoPrimary />
+            <div className="mb-10 overflow-hidden" style={{ background: "#08080c", borderRadius: 16, padding: "32px 40px", border: "1px solid rgba(255,255,255,0.08)" }}>
+              <LogoPrimary light />
             </div>
             <span
               className="text-xs font-semibold uppercase px-3 py-1 rounded-full mb-6"
               style={{
-                fontFamily: "var(--font-jetbrains, 'JetBrains Mono', monospace)",
+                fontFamily: "var(--font-jetbrains, 'PT Mono', monospace)",
                 letterSpacing: 2,
                 color: "var(--gold-dim)",
                 border: "1px solid var(--border-active)",
@@ -239,10 +254,10 @@ export default function WelcomePage() {
             >
               Government Planning Platform
             </span>
-            <h2 className="text-4xl sm:text-5xl font-bold leading-tight max-w-3xl mb-6" style={{ fontFamily: "var(--font-syne, 'Syne', sans-serif)", color: "var(--text-primary)" }}>
+            <h2 className="text-4xl sm:text-5xl font-bold leading-tight max-w-3xl mb-6" style={{ fontFamily: "var(--font-instrument, 'Open Sans', sans-serif)", color: "#E5E7EB" }}>
               Modern tools for city planners and government staff
             </h2>
-            <p className="text-lg max-w-xl mb-10" style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 300, color: "var(--text-secondary)" }}>
+            <p className="text-lg max-w-xl mb-10" style={{ fontFamily: "var(--font-dm, 'Open Sans', sans-serif)", fontWeight: 300, color: "#9CA3AF" }}>
               Interactive GIS maps, AI planning assistance, data analytics, and project
               collaboration — all in one secure platform built for municipal government.
             </p>
@@ -250,14 +265,14 @@ export default function WelcomePage() {
               <Link
                 href="/overview"
                 className="px-6 py-3 rounded-md transition-colors"
-                style={{ background: "linear-gradient(135deg, var(--gold-dim), var(--gold))", color: "var(--void)", fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 600 }}
+                style={{ background: "linear-gradient(135deg, var(--gold-dim), var(--gold))", color: "#08080c", fontFamily: "var(--font-dm, 'Open Sans', sans-serif)", fontWeight: 600 }}
               >
                 Access your workspace
               </Link>
               <a
                 href="#features"
                 className="px-6 py-3 rounded-md transition-colors"
-                style={{ background: "var(--graphite)", color: "var(--text-primary)", fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 500 }}
+                style={{ background: "#1e1e2a", color: "#E5E7EB", fontFamily: "var(--font-dm, 'Open Sans', sans-serif)", fontWeight: 500 }}
               >
                 See features
               </a>
@@ -266,7 +281,7 @@ export default function WelcomePage() {
         </section>
 
         {/* Stats strip */}
-        <section style={{ background: "var(--carbon)" }}>
+        <section style={{ background: "#0e0e14" }}>
           <div className="max-w-6xl mx-auto px-6 py-10 grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
             {[
               { value: "GIS Maps", label: "Interactive zoning & parcel data" },
@@ -275,19 +290,19 @@ export default function WelcomePage() {
               { value: "WCAG 2.1 AA", label: "Accessibility compliant" },
             ].map((s) => (
               <div key={s.value}>
-                <div className="text-xl font-bold mb-1" style={{ color: "var(--gold)", fontFamily: "var(--font-syne, 'Syne', sans-serif)" }}>{s.value}</div>
-                <div className="text-sm" style={{ color: "var(--text-secondary)", fontFamily: "var(--font-outfit, 'Outfit', sans-serif)" }}>{s.label}</div>
+                <div className="text-xl font-bold mb-1" style={{ color: "var(--gold)", fontFamily: "var(--font-instrument, 'Open Sans', sans-serif)" }}>{s.value}</div>
+                <div className="text-sm" style={{ color: "#9CA3AF", fontFamily: "var(--font-dm, 'Open Sans', sans-serif)" }}>{s.label}</div>
               </div>
             ))}
           </div>
         </section>
 
         {/* Features */}
-        <section id="features" className="py-20" style={{ background: "var(--void)" }}>
+        <section id="features" className="py-20" style={{ background: "#08080c" }}>
           <div className="max-w-6xl mx-auto px-6">
             <div className="text-center mb-14">
-              <h2 className="text-3xl font-bold mb-3" style={{ fontFamily: "var(--font-syne, 'Syne', sans-serif)", color: "var(--text-primary)" }}>Four core tools</h2>
-              <p className="max-w-lg mx-auto" style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", color: "var(--text-secondary)" }}>
+              <h2 className="text-3xl font-bold mb-3" style={{ fontFamily: "var(--font-instrument, 'Open Sans', sans-serif)", color: "#E5E7EB" }}>Four core tools</h2>
+              <p className="max-w-lg mx-auto" style={{ fontFamily: "var(--font-dm, 'Open Sans', sans-serif)", color: "#9CA3AF" }}>
                 Everything a planning department needs, integrated into a single workspace.
               </p>
             </div>
@@ -317,7 +332,7 @@ export default function WelcomePage() {
                 <div
                   key={f.title}
                   className="rounded-xl p-6 flex gap-5"
-                  style={{ background: "var(--carbon)", border: "1px solid var(--border)" }}
+                  style={{ background: "#0e0e14", border: "1px solid rgba(255,255,255,0.08)" }}
                 >
                   <div
                     className="shrink-0 w-11 h-11 rounded-lg flex items-center justify-center"
@@ -327,15 +342,15 @@ export default function WelcomePage() {
                   </div>
                   <div>
                     <div className="flex items-center gap-2 mb-2">
-                      <h3 className="font-semibold" style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", color: "var(--text-primary)" }}>{f.title}</h3>
+                      <h3 className="font-semibold" style={{ fontFamily: "var(--font-dm, 'Open Sans', sans-serif)", color: "#E5E7EB" }}>{f.title}</h3>
                       <span
                         className="text-xs px-2 py-0.5 rounded-full"
-                        style={{ color: "var(--text-secondary)", background: "var(--graphite)" }}
+                        style={{ color: "#9CA3AF", background: "#1e1e2a" }}
                       >
                         {f.tag}
                       </span>
                     </div>
-                    <p className="text-sm leading-relaxed" style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", color: "var(--text-secondary)" }}>{f.desc}</p>
+                    <p className="text-sm leading-relaxed" style={{ fontFamily: "var(--font-dm, 'Open Sans', sans-serif)", color: "#9CA3AF" }}>{f.desc}</p>
                   </div>
                 </div>
               ))}
@@ -344,22 +359,22 @@ export default function WelcomePage() {
         </section>
 
         {/* Roles */}
-        <section className="py-20" style={{ background: "var(--carbon)", borderTop: "1px solid var(--border)" }}>
+        <section className="py-20" style={{ background: "#0e0e14", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
           <div className="max-w-6xl mx-auto px-6">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-3" style={{ fontFamily: "var(--font-syne, 'Syne', sans-serif)", color: "var(--text-primary)" }}>Built for government teams</h2>
-              <p style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", color: "var(--text-secondary)" }}>Role-based access keeps the right people in the right seats.</p>
+              <h2 className="text-3xl font-bold mb-3" style={{ fontFamily: "var(--font-instrument, 'Open Sans', sans-serif)", color: "#E5E7EB" }}>Built for government teams</h2>
+              <p style={{ fontFamily: "var(--font-dm, 'Open Sans', sans-serif)", color: "#9CA3AF" }}>Role-based access keeps the right people in the right seats.</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               {[
-                { role: "Admin", badgeStyle: { background: "linear-gradient(135deg, var(--gold-dim), var(--gold))", color: "var(--void)" } as React.CSSProperties, perms: ["Manage users and roles", "Create and archive projects", "Configure GIS layers", "Moderate public comments", "Full read/write access"] },
-                { role: "Planner", badgeStyle: { background: "var(--graphite)", color: "var(--text-primary)" } as React.CSSProperties, perms: ["Create and edit projects", "Upload documents", "Use AI assistant", "Post and reply to comments", "View all analytics"] },
-                { role: "Viewer", badgeStyle: { background: "var(--steel)", color: "var(--text-secondary)" } as React.CSSProperties, perms: ["Read-only project access", "View GIS maps and layers", "Browse analytics dashboards", "View approved comments", "Use AI assistant"] },
+                { role: "Admin", badgeStyle: { background: "linear-gradient(135deg, var(--gold-dim), var(--gold))", color: "#08080c" } as React.CSSProperties, perms: ["Manage users and roles", "Create and archive projects", "Configure GIS layers", "Moderate public comments", "Full read/write access"] },
+                { role: "Planner", badgeStyle: { background: "#1e1e2a", color: "#E5E7EB" } as React.CSSProperties, perms: ["Create and edit projects", "Upload documents", "Use AI assistant", "Post and reply to comments", "View all analytics"] },
+                { role: "Viewer", badgeStyle: { background: "#16161f", color: "#9CA3AF" } as React.CSSProperties, perms: ["Read-only project access", "View GIS maps and layers", "Browse analytics dashboards", "View approved comments", "Use AI assistant"] },
               ].map((r) => (
                 <div
                   key={r.role}
                   className="rounded-xl p-6"
-                  style={{ border: "1px solid var(--border)" }}
+                  style={{ border: "1px solid rgba(255,255,255,0.08)" }}
                 >
                   <div
                     className="inline-block text-xs font-semibold px-3 py-1 rounded-full mb-4"
@@ -369,7 +384,7 @@ export default function WelcomePage() {
                   </div>
                   <ul className="space-y-2">
                     {r.perms.map((p) => (
-                      <li key={p} className="flex items-center gap-2 text-sm" style={{ color: "var(--text-secondary)" }}>
+                      <li key={p} className="flex items-center gap-2 text-sm" style={{ color: "#9CA3AF" }}>
                         <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ color: "var(--gold)" }}>
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
@@ -384,14 +399,14 @@ export default function WelcomePage() {
         </section>
 
         {/* CTA */}
-        <section className="py-16" style={{ background: "linear-gradient(135deg, var(--carbon) 0%, var(--slate) 100%)" }}>
+        <section className="py-16" style={{ background: "linear-gradient(135deg, #0e0e14 0%, #16161f 100%)" }}>
           <div className="max-w-2xl mx-auto px-6 text-center">
-            <h2 className="text-3xl font-bold mb-4" style={{ fontFamily: "var(--font-syne, 'Syne', sans-serif)", color: "var(--gold)" }}>Ready to get started?</h2>
-            <p className="mb-8" style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", color: "var(--text-secondary)" }}>Jump straight into the platform — no sign-in required to explore.</p>
+            <h2 className="text-3xl font-bold mb-4" style={{ fontFamily: "var(--font-instrument, 'Open Sans', sans-serif)", color: "var(--gold)" }}>Ready to get started?</h2>
+            <p className="mb-8" style={{ fontFamily: "var(--font-dm, 'Open Sans', sans-serif)", color: "#9CA3AF" }}>Jump straight into the platform — no sign-in required to explore.</p>
             <Link
               href="/overview"
               className="inline-block px-8 py-3 rounded-md transition-colors"
-              style={{ background: "linear-gradient(135deg, var(--gold-dim), var(--gold))", color: "var(--void)", fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 600, letterSpacing: 1 }}
+              style={{ background: "linear-gradient(135deg, var(--gold-dim), var(--gold))", color: "#08080c", fontFamily: "var(--font-dm, 'Open Sans', sans-serif)", fontWeight: 600, letterSpacing: 1 }}
             >
               Enter AXIOM
             </Link>
@@ -399,10 +414,10 @@ export default function WelcomePage() {
         </section>
 
         {/* Footer */}
-        <footer style={{ background: "var(--void)", borderTop: "1px solid var(--border)", color: "var(--text-ghost)" }} className="py-8">
+        <footer style={{ background: "#08080c", borderTop: "1px solid rgba(255,255,255,0.08)", color: "#6B7280" }} className="py-8">
           <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm">
-            <LogoNav />
-            <span style={{ fontFamily: "var(--font-jetbrains, 'JetBrains Mono', monospace)", fontSize: 11, letterSpacing: 1 }}>Planning Platform · WCAG 2.1 AA · Built for government</span>
+            <LogoNav light />
+            <span style={{ fontFamily: "var(--font-jetbrains, 'PT Mono', monospace)", fontSize: 11, letterSpacing: 1 }}>Planning Platform · WCAG 2.1 AA · Built for government</span>
           </div>
         </footer>
       </div>

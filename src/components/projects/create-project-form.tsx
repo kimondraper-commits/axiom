@@ -135,7 +135,7 @@ function calcImpacts(fields: {
   return { population, popDensity, projection30yr, constructionFTEs, ongoingJobs, retailSpending, sustainabilityScore: score };
 }
 
-const labelStyle: React.CSSProperties = { display: "block", fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 400, fontSize: 12, color: "var(--text-secondary)", marginBottom: 4 };
+const labelStyle: React.CSSProperties = { display: "block", fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 400, fontSize: 12, color: "var(--text-secondary)", marginBottom: 4 };
 
 interface SiteSummary {
   zone: string | null;
@@ -323,8 +323,8 @@ export function CreateProjectForm() {
         <Link href="/projects" style={{ fontSize: 13, color: "var(--text-ghost)", display: "block", marginBottom: 4 }}>
           ← Projects
         </Link>
-        <h1 style={{ fontFamily: "var(--font-syne, 'Syne', sans-serif)", fontWeight: 600, fontSize: 22, letterSpacing: 1, color: "var(--text-primary)" }}>New Project</h1>
-        <p style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 300, fontSize: 13, color: "var(--text-ghost)", marginTop: 4 }}>Create a new NSW DA project record</p>
+        <h1 style={{ fontFamily: "var(--font-syne, 'Open Sans', sans-serif)", fontWeight: 600, fontSize: 22, letterSpacing: 1, color: "var(--text-primary)" }}>New Project</h1>
+        <p style={{ fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 300, fontSize: 13, color: "var(--text-ghost)", marginTop: 4 }}>Create a new NSW DA project record</p>
       </div>
 
       {error && (
@@ -336,7 +336,7 @@ export function CreateProjectForm() {
       <div className="space-y-8">
         {/* Section 1 — Project Basics */}
         <div style={{ background: "var(--carbon)", border: "1px solid var(--border)", borderRadius: 3, padding: 24 }}>
-          <h2 style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 600, fontSize: 15, color: "var(--text-primary)", marginBottom: 16 }}>Project Basics</h2>
+          <h2 style={{ fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 600, fontSize: 15, color: "var(--text-primary)", marginBottom: 16 }}>Project Basics</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="md:col-span-2">
               <label style={labelStyle}>Project Title *</label>
@@ -381,7 +381,7 @@ export function CreateProjectForm() {
 
         {/* Section 2 — Proposal Details */}
         <div style={{ background: "var(--carbon)", border: "1px solid var(--border)", borderRadius: 3, padding: 24 }}>
-          <h2 style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 600, fontSize: 15, color: "var(--text-primary)", marginBottom: 16 }}>Proposal Details</h2>
+          <h2 style={{ fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 600, fontSize: 15, color: "var(--text-primary)", marginBottom: 16 }}>Proposal Details</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div><label style={labelStyle}>Dwellings</label><input type="number" min="0" value={fields.dwellings} onChange={set("dwellings")} className="w-full" placeholder="0" /></div>
             <div><label style={labelStyle}>Commercial GFA (m²)</label><input type="number" min="0" value={fields.commercialGfa} onChange={set("commercialGfa")} className="w-full" placeholder="0" /></div>
@@ -398,7 +398,7 @@ export function CreateProjectForm() {
         <div style={{ background: "var(--carbon)", border: "1px solid var(--border)", borderRadius: 3, padding: 24 }}>
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h2 style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 600, fontSize: 15, color: "var(--text-primary)", marginBottom: 4 }}>Site Summary</h2>
+              <h2 style={{ fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 600, fontSize: 15, color: "var(--text-primary)", marginBottom: 4 }}>Site Summary</h2>
               <p style={{ fontSize: 11, color: "var(--text-ghost)" }}>
                 <a href="https://www.planningportal.nsw.gov.au/spatialviewer" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold)" }}>
                   Open NSW Planning Portal Map →
@@ -432,7 +432,7 @@ export function CreateProjectForm() {
               { label: "Key Controls", value: siteSummary ? [siteSummary.heightLimit ? `Height: ${siteSummary.heightLimit}` : null, siteSummary.fsr ? `FSR: ${siteSummary.fsr}` : null, siteSummary.acidSulfate ? `Acid Sulfate: ${siteSummary.acidSulfate}` : null].filter(Boolean).join(", ") || null : null },
             ] as { label: string; value: string | null | undefined }[]).map(({ label, value }) => (
               <div key={label} style={{ border: "1px solid var(--border)", borderRadius: 6, padding: 12, background: "var(--slate)" }}>
-                <div style={{ fontFamily: "var(--font-jetbrains, 'JetBrains Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-dim)", marginBottom: 4 }}>{label}</div>
+                <div style={{ fontFamily: "var(--font-jetbrains, 'PT Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-dim)", marginBottom: 4 }}>{label}</div>
                 <div style={{ fontSize: 11, color: value ? "var(--text-primary)" : "var(--text-ghost)", fontStyle: value ? "normal" : "italic", fontWeight: value ? 500 : 400 }}>
                   {value || (siteSummary ? "Not applicable" : "Enter address and click Lookup")}
                 </div>
@@ -443,7 +443,7 @@ export function CreateProjectForm() {
 
         {/* Section 4 — Auto-Calculated Impact Estimates */}
         <div style={{ background: "var(--gold-glow)", border: "1px solid var(--border-active)", borderRadius: 3, padding: 24 }}>
-          <h2 style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 600, fontSize: 15, color: "var(--text-primary)", marginBottom: 4 }}>Auto-Calculated Impact Estimates</h2>
+          <h2 style={{ fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 600, fontSize: 15, color: "var(--text-primary)", marginBottom: 4 }}>Auto-Calculated Impact Estimates</h2>
           <p style={{ fontSize: 11, color: "var(--gold)", marginBottom: 16 }}>Updates live as you enter proposal details above</p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <ImpactCard label="Est. Population" value={fmt(impacts.population, 0)} sub="residents" />
@@ -491,8 +491,8 @@ export function CreateProjectForm() {
 function ImpactCard({ label, value, sub }: { label: string; value: string; sub: string }) {
   return (
     <div style={{ background: "var(--carbon)", border: "1px solid var(--border)", borderRadius: 6, padding: 12 }}>
-      <div style={{ fontFamily: "var(--font-jetbrains, 'JetBrains Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-dim)", marginBottom: 4 }}>{label}</div>
-      <div style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 600, fontSize: 18, color: "var(--text-primary)" }}>{value}</div>
+      <div style={{ fontFamily: "var(--font-jetbrains, 'PT Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-dim)", marginBottom: 4 }}>{label}</div>
+      <div style={{ fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 600, fontSize: 18, color: "var(--text-primary)" }}>{value}</div>
       <div style={{ fontSize: 11, color: "var(--text-ghost)" }}>{sub}</div>
     </div>
   );

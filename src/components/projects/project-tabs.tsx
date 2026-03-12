@@ -139,7 +139,7 @@ export function ProjectTabs({
           <Link href="/projects" style={{ fontSize: 13, color: "var(--text-ghost)", display: "block", marginBottom: 4 }}>
             ← Projects
           </Link>
-          <h1 style={{ fontFamily: "var(--font-syne, 'Syne', sans-serif)", fontWeight: 600, fontSize: 22, letterSpacing: 1, color: "var(--text-primary)" }}>{project.title}</h1>
+          <h1 style={{ fontFamily: "var(--font-syne, 'Open Sans', sans-serif)", fontWeight: 600, fontSize: 22, letterSpacing: 1, color: "var(--text-primary)" }}>{project.title}</h1>
           <div className="flex items-center gap-3 mt-2 flex-wrap">
             {project.nswStatus && (
               <span style={{ ...nswStyle, fontSize: 11, padding: "2px 8px", borderRadius: 9999, fontWeight: 500 }}>
@@ -171,7 +171,7 @@ export function ProjectTabs({
               onClick={() => setActiveTab(tab.id)}
               className="px-5 py-3 -mb-px transition-colors"
               style={{
-                fontFamily: "var(--font-outfit, 'Outfit', sans-serif)",
+                fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)",
                 fontWeight: activeTab === tab.id ? 500 : 400,
                 fontSize: 13,
                 color: activeTab === tab.id ? "var(--gold)" : "var(--text-ghost)",

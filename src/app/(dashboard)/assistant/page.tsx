@@ -39,12 +39,12 @@ export default async function AssistantPage({
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="px-6 py-4 flex items-center gap-3" style={{ borderBottom: "1px solid var(--border)", background: "var(--carbon)" }}>
+      <div className="px-6 py-4 flex items-center gap-3" style={{ borderBottom: "1px solid var(--border)", background: "var(--bg-secondary)" }}>
         <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "linear-gradient(135deg, var(--gold-dim), var(--gold))" }}>
-          <span style={{ color: "var(--void)", fontFamily: "var(--font-syne, 'Syne', sans-serif)", fontWeight: 700, fontSize: 12 }}>AI</span>
+          <span style={{ color: "#fff", fontFamily: "var(--font-instrument, 'Open Sans', sans-serif)", fontWeight: 700, fontSize: 12 }}>AI</span>
         </div>
         <div>
-          <h1 style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 500, color: "var(--text-primary)" }}>AI Planning Assistant</h1>
+          <h1 style={{ fontFamily: "var(--font-dm, 'Open Sans', sans-serif)", fontWeight: 500, color: "var(--text-primary)" }}>AI Planning Assistant</h1>
           {project && (
             <p style={{ fontSize: 11, color: "var(--text-ghost)", marginTop: 2 }}>
               Context: {project.title} · {project.city}

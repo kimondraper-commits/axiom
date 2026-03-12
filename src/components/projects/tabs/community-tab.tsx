@@ -17,7 +17,7 @@ const STATUS_STYLES: Record<string, React.CSSProperties> = {
   addressed: { background: "rgba(34,197,94,0.12)",  color: "#22c55e" },
 };
 
-const labelStyle: React.CSSProperties = { display: "block", fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 400, fontSize: 11, color: "var(--text-secondary)", marginBottom: 4 };
+const labelStyle: React.CSSProperties = { display: "block", fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 400, fontSize: 11, color: "var(--text-secondary)", marginBottom: 4 };
 
 const EMPTY_FORM = { submitterName: "", keyIssues: "", supporting: false };
 
@@ -97,15 +97,15 @@ export function CommunityTab({
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4">
         <div style={{ background: "var(--carbon)", border: "1px solid var(--border)", borderRadius: 3, padding: 16 }} className="text-center">
-          <div style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 600, fontSize: 24, color: "var(--text-primary)" }}>{total}</div>
+          <div style={{ fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 600, fontSize: 24, color: "var(--text-primary)" }}>{total}</div>
           <div style={{ fontSize: 11, color: "var(--text-ghost)", marginTop: 2 }}>Total Submissions</div>
         </div>
         <div style={{ background: "var(--carbon)", border: "1px solid rgba(34,197,94,0.2)", borderRadius: 3, padding: 16 }} className="text-center">
-          <div style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 600, fontSize: 24, color: "#4ade80" }}>{supporting}</div>
+          <div style={{ fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 600, fontSize: 24, color: "#4ade80" }}>{supporting}</div>
           <div style={{ fontSize: 11, color: "var(--text-ghost)", marginTop: 2 }}>Supporting</div>
         </div>
         <div style={{ background: "var(--carbon)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: 3, padding: 16 }} className="text-center">
-          <div style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 600, fontSize: 24, color: "#f87171" }}>{objecting}</div>
+          <div style={{ fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 600, fontSize: 24, color: "#f87171" }}>{objecting}</div>
           <div style={{ fontSize: 11, color: "var(--text-ghost)", marginTop: 2 }}>Objecting</div>
         </div>
       </div>

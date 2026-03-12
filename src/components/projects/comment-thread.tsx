@@ -89,7 +89,7 @@ export function CommentThread({ projectId, comments: initial, currentUserId, can
   return (
     <div style={{ background: "var(--carbon)", border: "1px solid var(--border)", borderRadius: 3 }}>
       <div className="px-5 py-4" style={{ borderBottom: "1px solid var(--border)" }}>
-        <h2 style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 500, color: "var(--text-primary)" }}>Comments ({comments.length})</h2>
+        <h2 style={{ fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 500, color: "var(--text-primary)" }}>Comments ({comments.length})</h2>
       </div>
 
       {/* New comment form */}

@@ -29,12 +29,12 @@ export function LogoNav({
     <div className={`flex items-center gap-2 ${className ?? ""}`}>
       <DiamondSVG size={28} />
       <span style={{
-        fontFamily: 'var(--font-syne, "Syne", sans-serif)',
+        fontFamily: 'var(--font-syne, "Open Sans", sans-serif)',
         fontWeight: 700,
         fontSize: 16,
         letterSpacing: 5,
         textTransform: "uppercase",
-        color: "var(--text-primary)",
+        color: light ? "#f0ece4" : "var(--text-primary)",
       }}>
         AXIOM
       </span>
@@ -48,7 +48,7 @@ export function LogoCompact({ light, className }: { light?: boolean; className?:
 }
 
 // ── LogoPrimary: full hero logo ───────────────────────────────
-export function LogoPrimary({ className }: { className?: string }) {
+export function LogoPrimary({ className, light }: { className?: string; light?: boolean }) {
   return (
     <div
       className={className}
@@ -57,18 +57,18 @@ export function LogoPrimary({ className }: { className?: string }) {
       <DiamondSVG size={90} />
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
         <div style={{
-          fontFamily: 'var(--font-syne, "Syne", sans-serif)',
+          fontFamily: 'var(--font-syne, "Open Sans", sans-serif)',
           fontWeight: 800,
           fontSize: 76,
           letterSpacing: 6,
-          color: "var(--text-primary, #f0ece4)",
+          color: light ? "#f0ece4" : "var(--text-primary)",
           textTransform: "uppercase",
           lineHeight: 1,
         }}>
           AXIOM
         </div>
         <div style={{
-          fontFamily: 'var(--font-jetbrains, "JetBrains Mono", monospace)',
+          fontFamily: 'var(--font-jetbrains, "PT Mono", monospace)',
           fontSize: 11,
           letterSpacing: 4,
           color: "var(--gold-dim, #8a7235)",

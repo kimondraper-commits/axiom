@@ -17,7 +17,7 @@ const ROLES = [
 
 const EMPTY_FORM = { name: "", role: ROLES[0], email: "", phone: "", organisation: "" };
 
-const labelStyle: React.CSSProperties = { display: "block", fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 400, fontSize: 11, color: "var(--text-secondary)", marginBottom: 4 };
+const labelStyle: React.CSSProperties = { display: "block", fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 400, fontSize: 11, color: "var(--text-secondary)", marginBottom: 4 };
 
 export function StakeholdersTab({
   project,
@@ -88,7 +88,7 @@ export function StakeholdersTab({
               <thead style={{ background: "var(--slate)", borderBottom: "1px solid var(--border)" }}>
                 <tr>
                   {["Name", "Role", "Organisation", "Email", "Phone", ...(canEdit ? [""] : [])].map((h) => (
-                    <th key={h} className="px-4 py-3 text-left" style={{ fontFamily: "var(--font-jetbrains, 'JetBrains Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--text-ghost)" }}>
+                    <th key={h} className="px-4 py-3 text-left" style={{ fontFamily: "var(--font-jetbrains, 'PT Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--text-ghost)" }}>
                       {h}
                     </th>
                   ))}

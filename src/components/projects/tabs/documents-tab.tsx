@@ -15,7 +15,7 @@ const DOC_CATEGORIES = [
 
 const FILE_TYPES = ["PDF", "DOCX", "DWG", "SHP", "XLSX", "JPG", "PNG", "Other"];
 
-const labelStyle: React.CSSProperties = { display: "block", fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 400, fontSize: 11, color: "var(--text-secondary)", marginBottom: 4 };
+const labelStyle: React.CSSProperties = { display: "block", fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 400, fontSize: 11, color: "var(--text-secondary)", marginBottom: 4 };
 
 export function DocumentsTab({
   project,

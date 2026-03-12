@@ -1,21 +1,16 @@
 import type { Metadata } from "next";
-import { Syne, Outfit, JetBrains_Mono } from "next/font/google";
+import { Open_Sans, PT_Mono } from "next/font/google";
 import "./globals.css";
 
-const syne = Syne({
+const openSans = Open_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-syne",
+  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-open-sans",
 });
-const outfit = Outfit({
+const ptMono = PT_Mono({
   subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
-  variable: "--font-outfit",
-});
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["300", "400", "500"],
-  variable: "--font-jetbrains",
+  weight: ["400"],
+  variable: "--font-pt-mono",
 });
 
 export const metadata: Metadata = {
@@ -32,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${syne.variable} ${outfit.variable} ${jetbrainsMono.variable} antialiased`}
+        className={`${openSans.variable} ${ptMono.variable} antialiased`}
       >
         {children}
       </body>

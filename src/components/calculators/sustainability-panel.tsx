@@ -6,8 +6,8 @@ import { DWELLING_SIZE_M2, DENSITY_THRESHOLD_DW_HA } from "@/lib/reference-data"
 function ResultCard({ label, value, unit, note }: { label: string; value: string; unit: string; note: string }) {
   return (
     <div style={{ background: "var(--carbon)", border: "1px solid var(--border)", borderRadius: 8, padding: 16 }}>
-      <p style={{ fontFamily: "var(--font-jetbrains, 'JetBrains Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-dim)", marginBottom: 4 }}>{label}</p>
-      <p style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 600, fontSize: 24, color: "var(--text-primary)" }}>
+      <p style={{ fontFamily: "var(--font-jetbrains, 'PT Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-dim)", marginBottom: 4 }}>{label}</p>
+      <p style={{ fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 600, fontSize: 24, color: "var(--text-primary)" }}>
         {value} <span style={{ fontWeight: 300, fontSize: 14, color: "var(--text-secondary)", marginLeft: 4 }}>{unit}</span>
       </p>
       <p style={{ fontSize: 11, color: "var(--text-ghost)", marginTop: 4 }}>{note}</p>
@@ -75,7 +75,7 @@ export function SustainabilityPanel() {
   }, [dwellings, siteHa, commercialGfa, greenHa, totalJobs, distanceTrainM, distanceBusM, hasMixedUse]);
 
   const ratingStyle = RATING_CONFIG[results.rating];
-  const labelStyle: React.CSSProperties = { display: "block", fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 400, fontSize: 12, color: "var(--text-secondary)", marginBottom: 4 };
+  const labelStyle: React.CSSProperties = { display: "block", fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 400, fontSize: 12, color: "var(--text-secondary)", marginBottom: 4 };
 
   return (
     <div className="flex gap-6">
@@ -100,14 +100,14 @@ export function SustainabilityPanel() {
         <div style={{ border: `1px solid ${ratingStyle.border}`, borderRadius: 8, padding: 20, background: ratingStyle.bg }}>
           <div className="flex items-center justify-between">
             <div>
-              <p style={{ fontFamily: "var(--font-jetbrains, 'JetBrains Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: ratingStyle.text, marginBottom: 4 }}>
+              <p style={{ fontFamily: "var(--font-jetbrains, 'PT Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: ratingStyle.text, marginBottom: 4 }}>
                 Composite sustainability rating
               </p>
-              <p style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 700, fontSize: 32, color: ratingStyle.text }}>{results.rating}</p>
+              <p style={{ fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 700, fontSize: 32, color: ratingStyle.text }}>{results.rating}</p>
               <p style={{ fontSize: 13, color: ratingStyle.text, opacity: 0.8, marginTop: 4 }}>{ratingStyle.desc}</p>
             </div>
             <div className="text-right">
-              <p style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 700, fontSize: 48, color: ratingStyle.text }}>{results.compositeScore}</p>
+              <p style={{ fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 700, fontSize: 48, color: ratingStyle.text }}>{results.compositeScore}</p>
               <p style={{ fontSize: 12, color: ratingStyle.text, opacity: 0.7 }}>/ 100</p>
             </div>
           </div>

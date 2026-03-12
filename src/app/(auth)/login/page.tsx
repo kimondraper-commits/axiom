@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import ShinyText from "@/components/ui/react-bits/shiny-text";
+import Particles from "@/components/ui/react-bits/particles";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -35,12 +37,25 @@ export default function LoginPage() {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center p-4"
-      style={{ background: "var(--void)" }}
+      className="relative min-h-screen flex items-center justify-center p-4"
+      style={{ background: "#08080c" }}
     >
+      {/* Particle background */}
+      <div className="absolute inset-0 z-0">
+        <Particles
+          particleCount={80}
+          particleColors={["#c8a44e", "#dbb85e", "#8a7235"]}
+          speed={0.05}
+          particleSpread={10}
+          particleBaseSize={80}
+          sizeRandomness={0.6}
+          alphaParticles
+          className="w-full h-full"
+        />
+      </div>
       <div
-        className="w-full max-w-sm rounded-lg p-8"
-        style={{ background: "var(--carbon)", border: "1px solid var(--border)", boxShadow: "var(--shadow-md)" }}
+        className="relative z-10 w-full max-w-sm rounded-lg p-8"
+        style={{ background: "#0e0e14", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "var(--shadow-card)" }}
       >
         {/* Logo / Brand */}
         <div className="mb-8 text-center">
@@ -60,16 +75,20 @@ export default function LoginPage() {
           <h1
             className="text-xl"
             style={{
-              fontFamily: "var(--font-syne, 'Syne', sans-serif)",
+              fontFamily: "var(--font-instrument, 'Open Sans', sans-serif)",
               fontWeight: 700,
               letterSpacing: 5,
-              color: "var(--text-primary)",
               textTransform: "uppercase",
             }}
           >
-            AXIOM
+            <ShinyText
+              text="AXIOM"
+              speed={3}
+              color="#8a7235"
+              shineColor="#dbb85e"
+            />
           </h1>
-          <p className="text-sm mt-1" style={{ color: "var(--text-secondary)" }}>
+          <p className="text-sm mt-1" style={{ color: "#9CA3AF" }}>
             Sign in to your planning workspace
           </p>
         </div>
@@ -79,7 +98,7 @@ export default function LoginPage() {
             <label
               htmlFor="email"
               className="block text-sm font-medium mb-1"
-              style={{ color: "var(--text-secondary)", fontFamily: "var(--font-outfit, 'Outfit', sans-serif)" }}
+              style={{ color: "#9CA3AF", fontFamily: "var(--font-dm, 'Open Sans', sans-serif)" }}
             >
               Email address
             </label>
@@ -92,6 +111,7 @@ export default function LoginPage() {
               onChange={(e) => setEmail(e.target.value)}
               className="w-full"
               placeholder="you@cityagency.gov"
+              style={{ background: "#16161f", color: "#E5E7EB", border: "1px solid rgba(255,255,255,0.08)" }}
             />
           </div>
 
@@ -99,7 +119,7 @@ export default function LoginPage() {
             <label
               htmlFor="password"
               className="block text-sm font-medium mb-1"
-              style={{ color: "var(--text-secondary)", fontFamily: "var(--font-outfit, 'Outfit', sans-serif)" }}
+              style={{ color: "#9CA3AF", fontFamily: "var(--font-dm, 'Open Sans', sans-serif)" }}
             >
               Password
             </label>
@@ -112,6 +132,7 @@ export default function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full"
               placeholder="••••••••"
+              style={{ background: "#16161f", color: "#E5E7EB", border: "1px solid rgba(255,255,255,0.08)" }}
             />
           </div>
 
@@ -127,8 +148,8 @@ export default function LoginPage() {
             className="w-full py-2.5 px-4 rounded-md text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             style={{
               background: "linear-gradient(135deg, var(--gold-dim), var(--gold))",
-              color: "var(--void)",
-              fontFamily: "var(--font-outfit, 'Outfit', sans-serif)",
+              color: "#08080c",
+              fontFamily: "var(--font-dm, 'Open Sans', sans-serif)",
               fontWeight: 600,
               letterSpacing: 1,
             }}
@@ -147,7 +168,7 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <p className="mt-6 text-xs text-center" style={{ color: "var(--text-ghost)" }}>
+        <p className="mt-6 text-xs text-center" style={{ color: "#6B7280" }}>
           Contact your administrator if you need access.
         </p>
       </div>

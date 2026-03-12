@@ -200,7 +200,7 @@ export function ComplianceTab({
         groupItems.length > 0 && (
           <div key={groupName} style={{ background: "var(--carbon)", border: "1px solid var(--border)", borderRadius: 3 }} className="overflow-hidden">
             <div className="px-5 py-3" style={{ background: "var(--slate)", borderBottom: "1px solid var(--border)" }}>
-              <span style={{ fontFamily: "var(--font-jetbrains, 'JetBrains Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-dim)" }}>{groupName}</span>
+              <span style={{ fontFamily: "var(--font-jetbrains, 'PT Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-dim)" }}>{groupName}</span>
               <span style={{ marginLeft: 8, fontSize: 11, color: "var(--text-ghost)" }}>({groupItems.filter((i) => i.checked).length}/{groupItems.length})</span>
             </div>
             <div>

@@ -121,7 +121,7 @@ export function StageUpload({ onParsed }: Props) {
             value={pasteText}
             onChange={(e) => setPasteText(e.target.value)}
             className="w-full"
-            style={{ height: 192, fontFamily: "var(--font-jetbrains, 'JetBrains Mono', monospace)" }}
+            style={{ height: 192, fontFamily: "var(--font-jetbrains, 'PT Mono', monospace)" }}
             placeholder="title,address,lga,dwellings&#10;My Project,123 Smith St,Sydney,50"
           />
           <button

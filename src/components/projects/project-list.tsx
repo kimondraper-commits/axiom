@@ -118,7 +118,7 @@ export function ProjectList({
       <th
         onClick={() => handleSort(k)}
         className="px-4 py-3 text-left cursor-pointer select-none whitespace-nowrap"
-        style={{ fontFamily: "var(--font-jetbrains, 'JetBrains Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--text-ghost)" }}
+        style={{ fontFamily: "var(--font-jetbrains, 'PT Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--text-ghost)" }}
       >
         {label}
         <span style={{ marginLeft: 4, color: active ? "var(--gold)" : "var(--text-ghost)" }}>
@@ -132,8 +132,8 @@ export function ProjectList({
     <div className="p-8 max-w-6xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 style={{ fontFamily: "var(--font-syne, 'Syne', sans-serif)", fontWeight: 600, fontSize: 22, letterSpacing: 1, color: "var(--text-primary)" }}>Projects</h1>
-          <p style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 300, fontSize: 13, color: "var(--text-ghost)", marginTop: 4 }}>{filtered.length} of {projects.length} project{projects.length !== 1 ? "s" : ""}</p>
+          <h1 style={{ fontFamily: "var(--font-syne, 'Open Sans', sans-serif)", fontWeight: 600, fontSize: 22, letterSpacing: 1, color: "var(--text-primary)" }}>Projects</h1>
+          <p style={{ fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 300, fontSize: 13, color: "var(--text-ghost)", marginTop: 4 }}>{filtered.length} of {projects.length} project{projects.length !== 1 ? "s" : ""}</p>
         </div>
         {canCreate && (
           <div className="flex items-center gap-2">

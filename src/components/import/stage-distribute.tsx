@@ -47,18 +47,18 @@ export function StageDistribute({ result, loading, apiError, rowCount, onStartNe
     <div>
       {/* Results card */}
       <div style={{ background: "var(--carbon)", border: "1px solid var(--border)", borderRadius: 3, padding: 24, marginBottom: 20 }}>
-        <h3 style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 600, fontSize: 15, color: "var(--text-primary)", marginBottom: 16 }}>Import Complete</h3>
+        <h3 style={{ fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 600, fontSize: 15, color: "var(--text-primary)", marginBottom: 16 }}>Import Complete</h3>
         <div className="grid grid-cols-3 gap-4 mb-5">
           <div style={{ background: "rgba(34,197,94,0.08)", border: "1px solid rgba(34,197,94,0.2)", borderRadius: 3, padding: 16 }} className="text-center">
-            <div style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 700, fontSize: 24, color: "#4ade80" }}>{projectsCreated}</div>
+            <div style={{ fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 700, fontSize: 24, color: "#4ade80" }}>{projectsCreated}</div>
             <div style={{ fontSize: 11, color: "var(--text-ghost)", marginTop: 4 }}>Created</div>
           </div>
           <div style={{ background: "var(--gold-glow)", border: "1px solid var(--border-active)", borderRadius: 3, padding: 16 }} className="text-center">
-            <div style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 700, fontSize: 24, color: "var(--gold)" }}>{projectsUpdated}</div>
+            <div style={{ fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 700, fontSize: 24, color: "var(--gold)" }}>{projectsUpdated}</div>
             <div style={{ fontSize: 11, color: "var(--text-ghost)", marginTop: 4 }}>Updated</div>
           </div>
           <div style={{ background: errorCount > 0 ? "rgba(239,68,68,0.08)" : "var(--slate)", border: `1px solid ${errorCount > 0 ? "rgba(239,68,68,0.2)" : "var(--border)"}`, borderRadius: 3, padding: 16 }} className="text-center">
-            <div style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 700, fontSize: 24, color: errorCount > 0 ? "#f87171" : "var(--text-ghost)" }}>{errorCount}</div>
+            <div style={{ fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 700, fontSize: 24, color: errorCount > 0 ? "#f87171" : "var(--text-ghost)" }}>{errorCount}</div>
             <div style={{ fontSize: 11, color: "var(--text-ghost)", marginTop: 4 }}>Errors</div>
           </div>
         </div>
@@ -66,22 +66,22 @@ export function StageDistribute({ result, loading, apiError, rowCount, onStartNe
         {/* Calc summary */}
         {calcSummary && (
           <div style={{ background: "var(--gold-glow)", border: "1px solid var(--border-active)", borderRadius: 3, padding: 16, marginBottom: 16 }}>
-            <p style={{ fontFamily: "var(--font-jetbrains, 'JetBrains Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-dim)", marginBottom: 12 }}>Aggregate Impact Estimates</p>
+            <p style={{ fontFamily: "var(--font-jetbrains, 'PT Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-dim)", marginBottom: 12 }}>Aggregate Impact Estimates</p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               <div>
-                <div style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 600, fontSize: 18, color: "var(--text-primary)" }}>{calcSummary.population.toLocaleString("en-AU")}</div>
+                <div style={{ fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 600, fontSize: 18, color: "var(--text-primary)" }}>{calcSummary.population.toLocaleString("en-AU")}</div>
                 <div style={{ fontSize: 11, color: "var(--text-ghost)" }}>Est. Population</div>
               </div>
               <div>
-                <div style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 600, fontSize: 18, color: "var(--text-primary)" }}>{calcSummary.constructionFTEs.toLocaleString("en-AU")}</div>
+                <div style={{ fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 600, fontSize: 18, color: "var(--text-primary)" }}>{calcSummary.constructionFTEs.toLocaleString("en-AU")}</div>
                 <div style={{ fontSize: 11, color: "var(--text-ghost)" }}>Construction FTEs</div>
               </div>
               <div>
-                <div style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 600, fontSize: 18, color: "var(--text-primary)" }}>{calcSummary.ongoingJobs.toLocaleString("en-AU")}</div>
+                <div style={{ fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 600, fontSize: 18, color: "var(--text-primary)" }}>{calcSummary.ongoingJobs.toLocaleString("en-AU")}</div>
                 <div style={{ fontSize: 11, color: "var(--text-ghost)" }}>Ongoing Jobs</div>
               </div>
               <div>
-                <div style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 600, fontSize: 18, color: "var(--text-primary)" }}>{calcSummary.sustainabilityScore}/100</div>
+                <div style={{ fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 600, fontSize: 18, color: "var(--text-primary)" }}>{calcSummary.sustainabilityScore}/100</div>
                 <div style={{ fontSize: 11, color: "var(--text-ghost)" }}>Avg. Sustainability</div>
               </div>
             </div>

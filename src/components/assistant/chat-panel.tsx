@@ -106,7 +106,7 @@ export function ChatPanel({ userId, projectId, initialMessages, sessionId: initi
         {messages.length === 0 && (
           <div className="text-center py-16">
             <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3" style={{ background: "var(--gold-glow)", border: "1px solid var(--border-active)" }}>
-              <span style={{ color: "var(--gold)", fontFamily: "var(--font-syne, 'Syne', sans-serif)", fontWeight: 600, fontSize: 16 }}>AI</span>
+              <span style={{ color: "var(--gold)", fontFamily: "var(--font-syne, 'Open Sans', sans-serif)", fontWeight: 600, fontSize: 16 }}>AI</span>
             </div>
             <p style={{ fontSize: 13, color: "var(--text-secondary)" }}>
               Ask any question about urban planning, zoning, regulations, or your project.

@@ -1,6 +1,8 @@
 import { db } from "@/lib/db";
-import { StatCard } from "@/components/analytics/stat-card";
+import { AnimatedStatCard } from "@/components/analytics/animated-stat-card";
+import { SpotlightLink } from "@/components/ui/react-bits/spotlight-link";
 import Link from "next/link";
+import React from "react";
 
 export const metadata = { title: "Overview — AXIOM" };
 
@@ -32,135 +34,192 @@ async function getRecentProjects() {
 }
 
 const STATUS_STYLES: Record<string, React.CSSProperties> = {
-  PLANNING: { background: "rgba(200,164,78,0.12)", color: "var(--gold)" },
-  ACTIVE: { background: "rgba(74,158,107,0.12)", color: "var(--status-success)" },
-  ON_HOLD: { background: "rgba(200,164,78,0.1)", color: "var(--gold-dim)" },
-  COMPLETED: { background: "rgba(74,158,107,0.15)", color: "var(--status-success)" },
-  ARCHIVED: { background: "rgba(240,236,228,0.06)", color: "var(--text-ghost)" },
+  PLANNING: { background: "rgba(201,168,76,0.12)", color: "#A8893C", border: "1px solid rgba(201,168,76,0.25)" },
+  ACTIVE: { background: "rgba(5,150,105,0.10)", color: "#059669", border: "1px solid rgba(5,150,105,0.25)" },
+  ON_HOLD: { background: "rgba(184,115,51,0.10)", color: "#B87333", border: "1px solid rgba(184,115,51,0.20)" },
+  COMPLETED: { background: "rgba(52,211,153,0.12)", color: "#059669", border: "1px solid rgba(52,211,153,0.30)" },
+  ARCHIVED: { background: "rgba(156,163,175,0.10)", color: "#9CA3AF", border: "1px solid rgba(156,163,175,0.20)" },
 };
 
 export default async function OverviewPage() {
-  const [stats, recentProjects] = await Promise.all([
-    getStats(),
-    getRecentProjects(),
-  ]);
+  const [stats, recentProjects] = await Promise.all([getStats(), getRecentProjects()]);
+
+  const date = new Date().toLocaleDateString("en-AU", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
   return (
     <>
       <style>{`
-        .overview-quick-link {
-          display: block;
-          border-radius: 3px;
-          padding: 16px;
-          background: var(--carbon);
-          border: 1px solid var(--border);
-          transition: all 0.3s ease;
-          text-decoration: none;
-          cursor: pointer;
-        }
-        .overview-quick-link:hover {
-          border-color: var(--border-hover);
-          transform: translateY(-1px);
-          box-shadow: var(--shadow-md);
-        }
         .overview-project-row {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 12px 20px;
-          transition: background 0.15s ease;
+          padding: 14px 24px;
+          transition: background 0.15s ease, transform 0.15s ease;
           text-decoration: none;
+          border-bottom: 1px solid var(--border);
+        }
+        .overview-project-row:last-child {
+          border-bottom: none;
         }
         .overview-project-row:hover {
-          background: rgba(200, 164, 78, 0.03);
+          background: rgba(201, 168, 76, 0.04);
+          padding-left: 28px;
         }
+        .stat-grid > * {
+          animation: fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) both;
+        }
+        .stat-grid > *:nth-child(1) { animation-delay: 0ms; }
+        .stat-grid > *:nth-child(2) { animation-delay: 70ms; }
+        .stat-grid > *:nth-child(3) { animation-delay: 140ms; }
+        .stat-grid > *:nth-child(4) { animation-delay: 210ms; }
+        .link-grid > * {
+          animation: fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) both;
+        }
+        .link-grid > *:nth-child(1) { animation-delay: 60ms; }
+        .link-grid > *:nth-child(2) { animation-delay: 110ms; }
+        .link-grid > *:nth-child(3) { animation-delay: 160ms; }
+        .link-grid > *:nth-child(4) { animation-delay: 210ms; }
+        .link-grid > *:nth-child(5) { animation-delay: 260ms; }
       `}</style>
 
       <div className="p-8 max-w-6xl mx-auto">
-        <div className="mb-8">
-          <h1
-            style={{
-              fontFamily: "var(--font-syne, 'Syne', sans-serif)",
-              fontWeight: 600,
-              fontSize: 22,
-              letterSpacing: 1,
-              color: "var(--text-primary)",
-            }}
-          >
-            Welcome to AXIOM
-          </h1>
+
+        {/* ── Page header ── */}
+        <div
+          className="mb-8"
+          style={{
+            animation: "fadeUp 0.45s cubic-bezier(0.22,1,0.36,1) both",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 4 }}>
+            <h1
+              style={{
+                fontFamily: "var(--font-instrument, 'Open Sans', sans-serif)",
+                fontWeight: 700,
+                fontSize: 26,
+                letterSpacing: "-0.02em",
+                color: "var(--text-primary)",
+              }}
+            >
+              Welcome to AXIOM
+            </h1>
+            <div
+              style={{
+                height: 2,
+                width: 32,
+                background: "linear-gradient(90deg, var(--gold), var(--bronze))",
+                borderRadius: 99,
+                marginTop: 2,
+              }}
+            />
+          </div>
           <p
-            className="mt-1"
             style={{
-              fontFamily: "var(--font-outfit, 'Outfit', sans-serif)",
-              fontWeight: 300,
+              fontFamily: "var(--font-dm, 'Open Sans', sans-serif)",
+              fontWeight: 400,
               fontSize: 13,
-              color: "var(--text-ghost)",
+              color: "var(--silver)",
             }}
           >
-            {new Date().toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}
+            {date}
           </p>
         </div>
 
-        {/* KPI Cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-          <StatCard label="Total Projects" value={stats.projectCount} />
-          <StatCard label="Active Projects" value={stats.activeProjects} highlight />
-          <StatCard label="Documents Filed" value={stats.totalDocuments} />
-          <StatCard
-            label="Pending Comments"
-            value={stats.pendingComments}
-            alert={stats.pendingComments > 0}
-          />
+        {/* ── KPI Cards ── */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10 stat-grid">
+          <AnimatedStatCard label="Total Projects" value={stats.projectCount} index={0} />
+          <AnimatedStatCard label="Active Projects" value={stats.activeProjects} index={1} highlight />
+          <AnimatedStatCard label="Documents Filed" value={stats.totalDocuments} index={2} />
+          <AnimatedStatCard label="Pending Comments" value={stats.pendingComments} index={3} alert={stats.pendingComments > 0} />
         </div>
 
-        {/* Quick Links */}
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-10">
+        {/* ── Quick Links ── */}
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-10 link-grid">
           {[
-            { href: "/maps", label: "Open GIS Map", icon: "\uD83D\uDDFA\uFE0F", desc: "View zoning & parcels" },
-            { href: "/analytics", label: "Analytics", icon: "\uD83D\uDCCA", desc: "City-wide dashboards" },
-            { href: "/projects", label: "Projects", icon: "\uD83D\uDCC1", desc: "Manage planning projects" },
-            { href: "/assistant", label: "AI Assistant", icon: "\uD83E\uDD16", desc: "Ask a planning question" },
-            { href: "/calculators", label: "Calculators", icon: "\u2211", desc: "Population & impact tools" },
+            { href: "/maps", label: "Open GIS Map", icon: "🗺️", desc: "View zoning & parcels" },
+            { href: "/analytics", label: "Analytics", icon: "📊", desc: "City-wide dashboards" },
+            { href: "/projects", label: "Projects", icon: "📁", desc: "Manage planning projects" },
+            { href: "/assistant", label: "AI Assistant", icon: "🤖", desc: "Ask a planning question" },
+            { href: "/calculators", label: "Calculators", icon: "∑", desc: "Population & impact tools" },
           ].map((item) => (
-            <Link key={item.href} href={item.href} className="overview-quick-link">
-              <div className="text-2xl mb-2">{item.icon}</div>
-              <div
-                style={{
-                  fontFamily: "var(--font-outfit, 'Outfit', sans-serif)",
-                  fontWeight: 500,
-                  fontSize: 13,
-                  color: "var(--text-primary)",
-                }}
-              >
-                {item.label}
-              </div>
-              <div
-                className="mt-0.5"
-                style={{ fontSize: 11, color: "var(--text-ghost)" }}
-              >
-                {item.desc}
-              </div>
-            </Link>
+            <SpotlightLink
+              key={item.href}
+              href={item.href}
+              icon={item.icon}
+              label={item.label}
+              desc={item.desc}
+            />
           ))}
         </div>
 
-        {/* Recent Projects */}
-        <div className="rounded-lg" style={{ background: "var(--carbon)", border: "1px solid var(--border)" }}>
+        {/* ── Recent Projects ── */}
+        <div
+          style={{
+            background: "rgba(255,255,255,0.85)",
+            backdropFilter: "blur(12px)",
+            WebkitBackdropFilter: "blur(12px)",
+            borderRadius: 14,
+            border: "1px solid var(--border)",
+            boxShadow: "var(--shadow-card)",
+            animation: "fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) 320ms both",
+            overflow: "hidden",
+          }}
+        >
+          {/* Table header */}
           <div
-            className="px-5 py-4 flex items-center justify-between"
-            style={{ borderBottom: "1px solid var(--border)" }}
+            style={{
+              padding: "16px 24px",
+              borderBottom: "1px solid var(--border)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              background: "rgba(250,251,252,0.7)",
+            }}
           >
-            <h2 style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 500, color: "var(--text-primary)" }}>Recent Projects</h2>
-            <Link href="/projects" className="text-sm hover:underline" style={{ color: "var(--gold)" }}>
-              View all
+            <h2
+              style={{
+                fontFamily: "var(--font-instrument, 'Open Sans', sans-serif)",
+                fontWeight: 600,
+                fontSize: 14,
+                color: "var(--text-primary)",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              Recent Projects
+            </h2>
+            <Link
+              href="/projects"
+              style={{
+                fontSize: 12,
+                fontFamily: "var(--font-dm, 'Open Sans', sans-serif)",
+                fontWeight: 500,
+                color: "var(--gold-dim)",
+                textDecoration: "none",
+              }}
+            >
+              View all →
             </Link>
           </div>
+
+          {/* Rows */}
           <div>
             {recentProjects.length === 0 ? (
-              <p className="px-5 py-6 text-sm text-center" style={{ color: "var(--text-ghost)" }}>
+              <p
+                style={{
+                  padding: "32px 24px",
+                  textAlign: "center",
+                  fontSize: 13,
+                  color: "var(--silver)",
+                  fontFamily: "var(--font-dm, 'Open Sans', sans-serif)",
+                }}
+              >
                 No projects yet.{" "}
-                <Link href="/projects" className="hover:underline" style={{ color: "var(--gold)" }}>
+                <Link href="/projects" style={{ color: "var(--gold)", fontWeight: 500 }}>
                   Create one
                 </Link>
               </p>
@@ -172,14 +231,38 @@ export default async function OverviewPage() {
                   className="overview-project-row"
                 >
                   <div>
-                    <div style={{ fontSize: 14, fontWeight: 500, color: "var(--text-primary)" }}>{p.title}</div>
-                    <div className="mt-0.5" style={{ fontSize: 12, color: "var(--text-secondary)" }}>
-                      {p.city}{p.district ? ` \u00B7 ${p.district}` : ""} \u00B7 {p.members.length} member{p.members.length !== 1 ? "s" : ""}
+                    <div
+                      style={{
+                        fontSize: 13,
+                        fontWeight: 600,
+                        color: "var(--text-primary)",
+                        fontFamily: "var(--font-dm, 'Open Sans', sans-serif)",
+                        marginBottom: 2,
+                      }}
+                    >
+                      {p.title}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: 11,
+                        color: "var(--silver)",
+                        fontFamily: "var(--font-jetbrains, 'PT Mono', monospace)",
+                        letterSpacing: "0.02em",
+                      }}
+                    >
+                      {p.city}
+                      {p.district ? ` · ${p.district}` : ""} · {p.members.length} member
+                      {p.members.length !== 1 ? "s" : ""}
                     </div>
                   </div>
                   <span
-                    className="text-xs px-2 py-0.5 rounded-full font-medium"
-                    style={STATUS_STYLES[p.status] ?? { background: "rgba(240,236,228,0.06)", color: "var(--text-ghost)" }}
+                    className="text-xs px-2.5 py-1 rounded-full font-medium"
+                    style={{
+                      fontFamily: "var(--font-dm, 'Open Sans', sans-serif)",
+                      fontSize: 11,
+                      fontWeight: 600,
+                      ...(STATUS_STYLES[p.status] ?? STATUS_STYLES.ARCHIVED),
+                    }}
                   >
                     {p.status.replace("_", " ")}
                   </span>

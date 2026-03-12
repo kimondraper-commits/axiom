@@ -22,10 +22,10 @@ export function CalculatorShell() {
     <div className="p-8 max-w-6xl mx-auto">
       {/* Header */}
       <div className="mb-8">
-        <h1 style={{ fontFamily: "var(--font-syne, 'Syne', sans-serif)", fontWeight: 600, fontSize: 22, letterSpacing: 1, color: "var(--text-primary)" }}>
+        <h1 style={{ fontFamily: "var(--font-syne, 'Open Sans', sans-serif)", fontWeight: 600, fontSize: 22, letterSpacing: 1, color: "var(--text-primary)" }}>
           Planning Calculators
         </h1>
-        <p style={{ fontFamily: "var(--font-outfit, 'Outfit', sans-serif)", fontWeight: 300, fontSize: 13, color: "var(--text-ghost)", marginTop: 4 }}>
+        <p style={{ fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)", fontWeight: 300, fontSize: 13, color: "var(--text-ghost)", marginTop: 4 }}>
           Estimate population, economic impact, environmental metrics, and sustainability scores for
           development assessments and council reporting.
         </p>
@@ -40,7 +40,7 @@ export function CalculatorShell() {
               onClick={() => setActiveTab(tab.id)}
               className="px-5 py-3 text-sm -mb-px transition-colors"
               style={{
-                fontFamily: "var(--font-outfit, 'Outfit', sans-serif)",
+                fontFamily: "var(--font-outfit, 'Open Sans', sans-serif)",
                 fontWeight: activeTab === tab.id ? 500 : 400,
                 fontSize: 13,
                 color: activeTab === tab.id ? "var(--gold)" : "var(--text-ghost)",

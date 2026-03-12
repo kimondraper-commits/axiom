@@ -45,7 +45,7 @@ export function ImportHistory() {
         <thead style={{ background: "var(--slate)", borderBottom: "1px solid var(--border)" }}>
           <tr>
             {["Date", "Filename", "Type", "Rows", "Created", "Updated", "Errors", "By", "Status"].map((h) => (
-              <th key={h} className="px-4 py-3 text-left whitespace-nowrap" style={{ fontFamily: "var(--font-jetbrains, 'JetBrains Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--text-ghost)" }}>
+              <th key={h} className="px-4 py-3 text-left whitespace-nowrap" style={{ fontFamily: "var(--font-jetbrains, 'PT Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--text-ghost)" }}>
                 {h}
               </th>
             ))}

@@ -19,8 +19,8 @@ const layerSchema = z.object({
   name: z.string().min(1),
   description: z.string().optional(),
   layerType: z.enum(["fill", "line", "circle", "symbol", "raster"]),
-  sourceConfig: z.record(z.unknown()),
-  layerConfig: z.record(z.unknown()),
+  sourceConfig: z.record(z.string(), z.unknown()),
+  layerConfig: z.record(z.string(), z.unknown()),
   sortOrder: z.number().int().optional(),
 });
 

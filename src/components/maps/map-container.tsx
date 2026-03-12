@@ -147,7 +147,7 @@ export default function MapContainer({ layers }: MapContainerProps) {
                 ) : popup.data ? (
                   <div className="space-y-3">
                     <div>
-                      <p style={{ fontFamily: "var(--font-jetbrains, 'JetBrains Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-dim)", marginBottom: 4 }}>Parcel</p>
+                      <p style={{ fontFamily: "var(--font-jetbrains, 'PT Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-dim)", marginBottom: 4 }}>Parcel</p>
                       <div className="space-y-0.5">
                         {[
                           { label: "Lot/Plan", value: popup.data.lotPlan },
@@ -166,7 +166,7 @@ export default function MapContainer({ layers }: MapContainerProps) {
                     </div>
                     {(popup.data.zone || popup.data.epi) && (
                       <div style={{ borderTop: "1px solid var(--border)", paddingTop: 8 }}>
-                        <p style={{ fontFamily: "var(--font-jetbrains, 'JetBrains Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-dim)", marginBottom: 4 }}>Zoning</p>
+                        <p style={{ fontFamily: "var(--font-jetbrains, 'PT Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-dim)", marginBottom: 4 }}>Zoning</p>
                         <div className="space-y-0.5">
                           {[
                             { label: "Zone", value: popup.data.zone },
@@ -184,7 +184,7 @@ export default function MapContainer({ layers }: MapContainerProps) {
                     )}
                     {(popup.data.heightLimit || popup.data.fsr || popup.data.heritage || popup.data.bushfire || popup.data.floodRisk || popup.data.acidSulfate) && (
                       <div style={{ borderTop: "1px solid var(--border)", paddingTop: 8 }}>
-                        <p style={{ fontFamily: "var(--font-jetbrains, 'JetBrains Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-dim)", marginBottom: 4 }}>Controls &amp; Constraints</p>
+                        <p style={{ fontFamily: "var(--font-jetbrains, 'PT Mono', monospace)", fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-dim)", marginBottom: 4 }}>Controls &amp; Constraints</p>
                         <div className="space-y-0.5">
                           {[
                             { label: "Height Limit", value: popup.data.heightLimit },
