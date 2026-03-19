@@ -11,18 +11,31 @@ and data analytics in one integrated platform.
 - NextAuth for authentication
 - Recharts (charts), Mapbox GL (maps)
 
-## Design System
-- Theme: Dark mode with gold metallic accents
-- Backgrounds: --void #08080c, --carbon #0e0e14, --slate #16161f, --graphite #1e1e2a
-- Accent: --gold #c8a44e, --gold-dim #8a7235, --gold-light #dbb85e
-- Fonts: Syne (headings), Outfit (body), JetBrains Mono (data)
+## Design System (Post-Rebrand)
+- Theme: Dark mode with green tech accents
+- Accent: --green #00e87b
+- Surfaces: --black #04060a, --deep #080c10, --surface #0d1117, --panel #111820
+- Fonts: Exo 2 (--font-exo), Chakra Petch (--font-chakra), Rajdhani (--font-rajdhani), Share Tech Mono (--font-mono)
+- Compatibility aliases in globals.css: --void, --carbon, --gold, --gold-dim resolve to green equivalents
 - All text is light on dark. No white backgrounds anywhere.
 - Inline `style` props with CSS variables preferred over Tailwind color classes
 
+## Build Commands
+- `npm run dev` — start dev server (Turbopack)
+- `npm run build` — production build
+- `npm run lint` — ESLint
+- `npx tsc --noEmit` — type-check without build
+- `npx prisma db push` — sync schema to database
+- `npx prisma generate` — regenerate Prisma client
+
+## Known TS Errors (pre-existing, safe to ignore)
+- `src/lib/auth.ts` — adapter type mismatch (next-auth version conflict)
+- `src/app/api/maps/layers/route.ts` — Prisma JsonNull typing issue
+
 ## Rules
-- Never use bright blue (#3b82f6) — always use gold (#c8a44e)
-- Never use white backgrounds — always use --void or --carbon
-- All stat labels use JetBrains Mono, uppercase, letter-spacing 2px
+- Never use bright blue (#3b82f6) — always use green (#00e87b)
+- Never use white backgrounds — always use --black or --deep
+- All stat labels use Share Tech Mono, uppercase, letter-spacing 2px
 - Calculator outputs must cite their data source (ABS, DCCEW, etc.)
 - The brand name is "AXIOM" — never "Uruk" or "Uruk Pro"
 - NSW planning standards only — no US/UK references (no CEQA, use EP&A Act)
