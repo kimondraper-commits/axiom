@@ -9,6 +9,7 @@ import { LogoNav } from "@/components/ui/logo";
 const NAV_ITEMS = [
   { href: "/overview", label: "Overview", icon: "⊞" },
   { href: "/maps", label: "GIS Maps", icon: "⬫" },
+  { href: "/aim", label: "AIM Site Finder", icon: "⊘" },
   { href: "/analytics", label: "Analytics", icon: "▦" },
   { href: "/projects", label: "Projects", icon: "⟰" },
   { href: "/assistant", label: "AI Assistant", icon: "◈" },
@@ -21,6 +22,7 @@ const NAV_ITEMS = [
   { href: "/acquisitions", label: "Acquisitions", icon: "⊡" },
   { href: "/biodiversity", label: "Biodiversity", icon: "❋" },
   { href: "/submissions", label: "Submissions", icon: "✉" },
+  { href: "/workbench", label: "Workbench", icon: "⊞" },
   { href: "/import", label: "Import Data", icon: "↑" },
 ];
 

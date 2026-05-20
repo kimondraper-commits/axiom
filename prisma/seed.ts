@@ -51,331 +51,200 @@ async function main() {
     },
   });
 
-  // Seed map layers — NSW Open Data
-  await db.mapLayer.upsert({
-    where: { id: "nsw-lot-boundaries" },
-    update: {},
-    create: {
-      id: "nsw-lot-boundaries",
-      name: "NSW Lot Boundaries",
-      description: "[Cadastre] NSW lot and property boundaries",
-      layerType: "raster",
-      sourceConfig: {
-        type: "raster",
-        tiles: [
-          "https://maps.six.nsw.gov.au/arcgis/rest/services/sixmaps/LotMap/MapServer/tile/{z}/{y}/{x}",
-        ],
-        tileSize: 256,
-      },
-      layerConfig: {
-        type: "raster",
-        paint: { "raster-opacity": 0.6 },
-      },
-      sortOrder: 1,
-    },
+  // ── Seed map layers — NSW Open Data ─────────────────────────
+  // Helper: ArcGIS dynamic export URL for non-cached services
+  const arcExport = (base: string, layers?: string) =>
+    `${base}/MapServer/export?bbox={bbox-epsg-3857}&bboxSR=3857&imageSR=3857&size=512,512&format=png32&transparent=true${layers ? `&layers=show:${layers}` : ""}&f=image`;
+
+  const SIX = "https://maps.six.nsw.gov.au/arcgis/rest/services/sixmaps";
+  const EPI1 = "https://mapprod1.environment.nsw.gov.au/arcgis/rest/services/Planning/EPI_Primary_Planning_Layers";
+  const EPI2 = "https://mapprod1.environment.nsw.gov.au/arcgis/rest/services/Planning/EPI_Protection_Layers";
+  const COASTAL = "https://mapprod1.environment.nsw.gov.au/arcgis/rest/services/CoastalManagementSEPP/CoastalManagementSEPP";
+
+  // Helper: upsert that ALSO updates on re-seed (not a no-op)
+  type LayerSeed = { name: string; description: string; layerType: string; sourceConfig: any; layerConfig: any; isActive?: boolean; sortOrder: number };
+  const seedLayer = async (id: string, data: LayerSeed) => {
+    const { name, description, layerType, sourceConfig, layerConfig, isActive, sortOrder } = data;
+    const fields = { name, description, layerType, sourceConfig, layerConfig, isActive: isActive ?? true, sortOrder };
+    await db.mapLayer.upsert({
+      where: { id },
+      update: fields,
+      create: { id, ...fields },
+    });
+  };
+
+  const rasterExportSource = (url: string) => ({ type: "raster", tiles: [url], tileSize: 512 });
+  const rasterTileSource = (url: string, size = 256) => ({ type: "raster", tiles: [url], tileSize: size });
+  const rasterLayer = (opacity = 0.6) => ({ type: "raster", paint: { "raster-opacity": opacity } });
+
+  // 1. NSW Lot Boundaries — sixmaps/Cadastre (dynamic, layer 0 = Lot)
+  await seedLayer("nsw-lot-boundaries", {
+    name: "NSW Lot Boundaries",
+    description: "[Cadastre] NSW lot and property boundaries",
+    layerType: "raster",
+    sourceConfig: rasterExportSource(arcExport(`${SIX}/Cadastre`, "0")),
+    layerConfig: rasterLayer(0.6),
+    sortOrder: 1,
   });
 
-  await db.mapLayer.upsert({
-    where: { id: "nsw-lep-zones" },
-    update: {},
-    create: {
-      id: "nsw-lep-zones",
-      name: "NSW LEP Land Use Zones",
-      description: "[Planning] NSW Local Environmental Plan zoning",
-      layerType: "raster",
-      sourceConfig: {
-        type: "raster",
-        tiles: [
-          "https://mapprod3.environment.nsw.gov.au/arcgis/rest/services/Planning/EPI_Primary_Planning_Layers/MapServer/tile/{z}/{y}/{x}",
-        ],
-        tileSize: 256,
-      },
-      layerConfig: {
-        type: "raster",
-        paint: { "raster-opacity": 0.6 },
-      },
-      sortOrder: 2,
-    },
+  // 2. NSW LEP Land Use Zones — EPI Primary Planning Layers (dynamic, layer 2)
+  await seedLayer("nsw-lep-zones", {
+    name: "NSW LEP Land Use Zones",
+    description: "[Planning] NSW Local Environmental Plan zoning",
+    layerType: "raster",
+    sourceConfig: rasterExportSource(arcExport(EPI1, "2")),
+    layerConfig: rasterLayer(0.6),
+    sortOrder: 2,
   });
 
-  await db.mapLayer.upsert({
-    where: { id: "nsw-train-stations" },
-    update: {},
-    create: {
-      id: "nsw-train-stations",
-      name: "NSW Train Stations",
-      description: "[Transport] TfNSW train station locations",
-      layerType: "circle",
-      sourceConfig: {
-        type: "geojson",
-        data: "/api/data-sources/tfnsw/stops",
+  // 3. NSW Train Stations — internal API (public, no auth)
+  await seedLayer("nsw-train-stations", {
+    name: "NSW Train Stations",
+    description: "[Transport] TfNSW train station locations",
+    layerType: "circle",
+    sourceConfig: { type: "geojson", data: "/api/data-sources/tfnsw/stops" },
+    layerConfig: {
+      type: "circle",
+      paint: {
+        "circle-color": "#00e87b",
+        "circle-radius": 5,
+        "circle-stroke-color": "#04060a",
+        "circle-stroke-width": 1.5,
       },
-      layerConfig: {
-        type: "circle",
-        paint: {
-          "circle-color": "#f59e0b",
-          "circle-radius": 5,
-          "circle-stroke-color": "#fff",
-          "circle-stroke-width": 1,
-        },
-      },
-      sortOrder: 3,
     },
+    sortOrder: 3,
   });
 
-  await db.mapLayer.upsert({
-    where: { id: "nsw-flood-planning" },
-    update: {},
-    create: {
-      id: "nsw-flood-planning",
-      name: "NSW Flood Planning Areas",
-      description: "[Environmental] NSW flood planning area overlays",
-      layerType: "raster",
-      sourceConfig: {
-        type: "raster",
-        tiles: [
-          "https://mapprod3.environment.nsw.gov.au/arcgis/rest/services/Planning/EP_Flooding/MapServer/tile/{z}/{y}/{x}",
-        ],
-        tileSize: 256,
-      },
-      layerConfig: {
-        type: "raster",
-        paint: { "raster-opacity": 0.6 },
-      },
-      sortOrder: 4,
-    },
+  // 4. NSW Flood Planning — EPI Protection Layers (dynamic, layer 1)
+  await seedLayer("nsw-flood-planning", {
+    name: "NSW Flood Planning Areas",
+    description: "[Environmental] NSW flood planning area overlays",
+    layerType: "raster",
+    sourceConfig: rasterExportSource(arcExport(EPI2, "1")),
+    layerConfig: rasterLayer(0.6),
+    sortOrder: 4,
   });
 
-  // --- 10 additional NSW government data layers ---
-
-  await db.mapLayer.upsert({
-    where: { id: "nsw-bushfire" },
-    update: {},
-    create: {
-      id: "nsw-bushfire",
-      name: "NSW Bushfire Prone Land",
-      description: "[Environmental] Bush Fire Prone Land mapping",
-      layerType: "raster",
-      sourceConfig: {
-        type: "raster",
-        tiles: [
-          "https://mapprod3.environment.nsw.gov.au/arcgis/rest/services/Planning/Bush_Fire_Prone_Land/MapServer/tile/{z}/{y}/{x}",
-        ],
-        tileSize: 256,
-      },
-      layerConfig: {
-        type: "raster",
-        paint: { "raster-opacity": 0.6 },
-      },
-      sortOrder: 5,
-    },
+  // 5. NSW Bushfire — DEACTIVATED (no working raster export; parcel inspector shows bushfire status)
+  await seedLayer("nsw-bushfire", {
+    name: "NSW Bushfire Prone Land",
+    description: "[Environmental] Bush Fire Prone Land mapping",
+    layerType: "raster",
+    sourceConfig: rasterExportSource(""),
+    layerConfig: rasterLayer(0.6),
+    isActive: false,
+    sortOrder: 5,
   });
 
-  await db.mapLayer.upsert({
-    where: { id: "nsw-heritage" },
-    update: {},
-    create: {
-      id: "nsw-heritage",
-      name: "NSW Heritage Items",
-      description: "[Planning] EPI Heritage items and conservation areas",
-      layerType: "raster",
-      sourceConfig: {
-        type: "raster",
-        tiles: [
-          "https://mapprod3.environment.nsw.gov.au/arcgis/rest/services/Planning/EPI_Heritage/MapServer/tile/{z}/{y}/{x}",
-        ],
-        tileSize: 256,
-      },
-      layerConfig: {
-        type: "raster",
-        paint: { "raster-opacity": 0.6 },
-      },
-      sortOrder: 6,
-    },
+  // 6. NSW Heritage — EPI Primary Planning Layers (dynamic, layer 0)
+  await seedLayer("nsw-heritage", {
+    name: "NSW Heritage Items",
+    description: "[Planning] EPI Heritage items and conservation areas",
+    layerType: "raster",
+    sourceConfig: rasterExportSource(arcExport(EPI1, "0")),
+    layerConfig: rasterLayer(0.6),
+    sortOrder: 6,
   });
 
-  await db.mapLayer.upsert({
-    where: { id: "nsw-acid-sulfate" },
-    update: {},
-    create: {
-      id: "nsw-acid-sulfate",
-      name: "NSW Acid Sulfate Soils",
-      description: "[Environmental] EPI Acid Sulfate Soils classification",
-      layerType: "raster",
-      sourceConfig: {
-        type: "raster",
-        tiles: [
-          "https://mapprod3.environment.nsw.gov.au/arcgis/rest/services/Planning/EPI_Acid_Sulfate_Soils/MapServer/tile/{z}/{y}/{x}",
-        ],
-        tileSize: 256,
-      },
-      layerConfig: {
-        type: "raster",
-        paint: { "raster-opacity": 0.6 },
-      },
-      sortOrder: 7,
-    },
+  // 7. NSW Acid Sulfate Soils — EPI Protection Layers (dynamic, layer 0)
+  await seedLayer("nsw-acid-sulfate", {
+    name: "NSW Acid Sulfate Soils",
+    description: "[Environmental] EPI Acid Sulfate Soils classification",
+    layerType: "raster",
+    sourceConfig: rasterExportSource(arcExport(EPI2, "0")),
+    layerConfig: rasterLayer(0.6),
+    sortOrder: 7,
   });
 
-  await db.mapLayer.upsert({
-    where: { id: "nsw-coastal" },
-    update: {},
-    create: {
-      id: "nsw-coastal",
-      name: "NSW Coastal Management",
-      description: "[Environmental] Coastal Management Areas (SEPP)",
-      layerType: "raster",
-      sourceConfig: {
-        type: "raster",
-        tiles: [
-          "https://mapprod3.environment.nsw.gov.au/arcgis/rest/services/Planning/Coastal_Management/MapServer/tile/{z}/{y}/{x}",
-        ],
-        tileSize: 256,
-      },
-      layerConfig: {
-        type: "raster",
-        paint: { "raster-opacity": 0.6 },
-      },
-      sortOrder: 8,
-    },
+  // 8. NSW Coastal Management — CoastalManagementSEPP (dynamic, all sublayers)
+  await seedLayer("nsw-coastal", {
+    name: "NSW Coastal Management",
+    description: "[Environmental] Coastal Management Areas (SEPP)",
+    layerType: "raster",
+    sourceConfig: rasterExportSource(arcExport(COASTAL)),
+    layerConfig: rasterLayer(0.6),
+    sortOrder: 8,
   });
 
-  await db.mapLayer.upsert({
-    where: { id: "nsw-wetlands" },
-    update: {},
-    create: {
-      id: "nsw-wetlands",
-      name: "NSW Wetlands",
-      description: "[Environmental] EPI Wetlands mapping",
-      layerType: "raster",
-      sourceConfig: {
-        type: "raster",
-        tiles: [
-          "https://mapprod3.environment.nsw.gov.au/arcgis/rest/services/Planning/EPI_Wetlands/MapServer/tile/{z}/{y}/{x}",
-        ],
-        tileSize: 256,
-      },
-      layerConfig: {
-        type: "raster",
-        paint: { "raster-opacity": 0.6 },
-      },
-      sortOrder: 9,
-    },
+  // 9. NSW Wetlands — EPI Protection Layers (dynamic, layer 3)
+  await seedLayer("nsw-wetlands", {
+    name: "NSW Wetlands",
+    description: "[Environmental] EPI Wetlands mapping",
+    layerType: "raster",
+    sourceConfig: rasterExportSource(arcExport(EPI2, "3")),
+    layerConfig: rasterLayer(0.6),
+    sortOrder: 9,
   });
 
-  await db.mapLayer.upsert({
-    where: { id: "nsw-riparian" },
-    update: {},
-    create: {
-      id: "nsw-riparian",
-      name: "NSW Riparian Lands",
-      description: "[Environmental] EPI Riparian Lands and Waterways",
-      layerType: "raster",
-      sourceConfig: {
-        type: "raster",
-        tiles: [
-          "https://mapprod3.environment.nsw.gov.au/arcgis/rest/services/Planning/EPI_Riparian_Lands/MapServer/tile/{z}/{y}/{x}",
-        ],
-        tileSize: 256,
-      },
-      layerConfig: {
-        type: "raster",
-        paint: { "raster-opacity": 0.6 },
-      },
-      sortOrder: 10,
-    },
+  // 10. NSW Riparian Lands — EPI Protection Layers (dynamic, layer 11)
+  await seedLayer("nsw-riparian", {
+    name: "NSW Riparian Lands",
+    description: "[Environmental] EPI Riparian Lands and Waterways",
+    layerType: "raster",
+    sourceConfig: rasterExportSource(arcExport(EPI2, "11")),
+    layerConfig: rasterLayer(0.6),
+    sortOrder: 10,
   });
 
-  await db.mapLayer.upsert({
-    where: { id: "nsw-aerial" },
-    update: {},
-    create: {
-      id: "nsw-aerial",
-      name: "NSW Aerial Imagery",
-      description: "[Cadastre] NSW high-resolution aerial imagery",
-      layerType: "raster",
-      sourceConfig: {
-        type: "raster",
-        tiles: [
-          "https://maps.six.nsw.gov.au/arcgis/rest/services/sixmaps/LPI_Imagery_Best/MapServer/tile/{z}/{y}/{x}",
-        ],
-        tileSize: 256,
-      },
-      layerConfig: {
-        type: "raster",
-        paint: { "raster-opacity": 0.8 },
-      },
-      sortOrder: 11,
-    },
+  // 11. NSW Aerial Imagery — sixmaps/LPI_Imagery_Best (tile-cached, CONFIRMED WORKING)
+  await seedLayer("nsw-aerial", {
+    name: "NSW Aerial Imagery",
+    description: "[Cadastre] NSW high-resolution aerial imagery",
+    layerType: "raster",
+    sourceConfig: rasterTileSource(`${SIX}/LPI_Imagery_Best/MapServer/tile/{z}/{y}/{x}`),
+    layerConfig: rasterLayer(0.8),
+    sortOrder: 11,
   });
 
-  await db.mapLayer.upsert({
-    where: { id: "nsw-lga-boundaries" },
-    update: {},
-    create: {
-      id: "nsw-lga-boundaries",
-      name: "NSW LGA Boundaries",
-      description: "[Cadastre] Local Government Area boundaries",
-      layerType: "raster",
-      sourceConfig: {
-        type: "raster",
-        tiles: [
-          "https://maps.six.nsw.gov.au/arcgis/rest/services/sixmaps/LGAMap/MapServer/tile/{z}/{y}/{x}",
-        ],
-        tileSize: 256,
-      },
-      layerConfig: {
-        type: "raster",
-        paint: { "raster-opacity": 0.5 },
-      },
-      sortOrder: 12,
-    },
+  // 12. NSW LGA Boundaries — sixmaps/Boundaries (dynamic, layer 1 = LGA)
+  await seedLayer("nsw-lga-boundaries", {
+    name: "NSW LGA Boundaries",
+    description: "[Cadastre] Local Government Area boundaries",
+    layerType: "raster",
+    sourceConfig: rasterExportSource(arcExport(`${SIX}/Boundaries`, "1")),
+    layerConfig: rasterLayer(0.5),
+    sortOrder: 12,
   });
 
-  await db.mapLayer.upsert({
-    where: { id: "nsw-seed-vegetation" },
-    update: {},
-    create: {
-      id: "nsw-seed-vegetation",
-      name: "NSW Native Vegetation",
-      description: "[Environmental] SEED Native Vegetation mapping",
-      layerType: "raster",
-      sourceConfig: {
-        type: "raster",
-        tiles: [
-          "https://mapprod3.environment.nsw.gov.au/arcgis/rest/services/NativeVegetation/MapServer/tile/{z}/{y}/{x}",
-        ],
-        tileSize: 256,
-      },
-      layerConfig: {
-        type: "raster",
-        paint: { "raster-opacity": 0.6 },
-      },
-      sortOrder: 13,
-    },
+  // 13. NSW Native Vegetation — DEACTIVATED (no general veg raster service available)
+  await seedLayer("nsw-seed-vegetation", {
+    name: "NSW Native Vegetation",
+    description: "[Environmental] SEED Native Vegetation mapping",
+    layerType: "raster",
+    sourceConfig: rasterExportSource(""),
+    layerConfig: rasterLayer(0.6),
+    isActive: false,
+    sortOrder: 13,
   });
 
-  await db.mapLayer.upsert({
-    where: { id: "nsw-seed-biodiversity" },
-    update: {},
-    create: {
-      id: "nsw-seed-biodiversity",
-      name: "NSW Biodiversity Values",
-      description: "[Environmental] SEED Biodiversity Values Map",
-      layerType: "raster",
-      sourceConfig: {
-        type: "raster",
-        tiles: [
-          "https://mapprod3.environment.nsw.gov.au/arcgis/rest/services/BiodiversityValuesMap/MapServer/tile/{z}/{y}/{x}",
-        ],
-        tileSize: 256,
-      },
-      layerConfig: {
-        type: "raster",
-        paint: { "raster-opacity": 0.6 },
-      },
-      sortOrder: 14,
-    },
+  // 14. NSW Biodiversity — EPI Protection Layers (dynamic, layer 4 = Terrestrial Biodiversity)
+  await seedLayer("nsw-seed-biodiversity", {
+    name: "NSW Biodiversity Values",
+    description: "[Environmental] Terrestrial Biodiversity (EPI Protection Layers)",
+    layerType: "raster",
+    sourceConfig: rasterExportSource(arcExport(EPI2, "4")),
+    layerConfig: rasterLayer(0.6),
+    sortOrder: 14,
+  });
+
+  // 15. NEW — NSW Height of Building — EPI Primary Planning Layers (layer 5)
+  await seedLayer("nsw-height-of-building", {
+    name: "NSW Height of Building",
+    description: "[Planning] Maximum building height limits from LEP",
+    layerType: "raster",
+    sourceConfig: rasterExportSource(arcExport(EPI1, "5")),
+    layerConfig: rasterLayer(0.6),
+    sortOrder: 15,
+  });
+
+  // 16. NEW — NSW Floor Space Ratio — EPI Primary Planning Layers (layer 1)
+  await seedLayer("nsw-fsr", {
+    name: "NSW Floor Space Ratio",
+    description: "[Planning] FSR limits from LEP",
+    layerType: "raster",
+    sourceConfig: rasterExportSource(arcExport(EPI1, "1")),
+    layerConfig: rasterLayer(0.6),
+    sortOrder: 16,
   });
 
   // Seed projects
