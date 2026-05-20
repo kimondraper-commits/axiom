@@ -16,6 +16,7 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",
     "@auth/prisma-adapter": "^2.11.1",
+    "@mapbox/mapbox-gl-draw": "^1.5.1",
     "@prisma/adapter-pg": "^7.4.1",
     "@prisma/client": "^7.4.1",
     "@radix-ui/react-avatar": "^1.1.11",
@@ -28,7 +29,10 @@
     "@radix-ui/react-slot": "^1.2.4",
     "@radix-ui/react-tabs": "^1.1.13",
     "@radix-ui/react-tooltip": "^1.2.8",
+    "@react-pdf/renderer": "^4.4.1",
+    "@tmcw/togeojson": "^7.1.2",
     "@turf/turf": "^7.3.4",
+    "@types/mapbox__mapbox-gl-draw": "^1.4.9",
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.36.2",
     "ai": "^6.0.94",
