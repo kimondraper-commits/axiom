@@ -1,6 +1,8 @@
 import { auth } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 const NSW_CADASTRE_URL =
   "https://maps.six.nsw.gov.au/arcgis/rest/services/sixmaps/Cadastre/MapServer/identify";
 const NSW_PLANNING_URL =

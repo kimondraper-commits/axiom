@@ -6,6 +6,8 @@ import { runAllCalculators } from "@/lib/import/calculator-engine";
 import { validateProjectRow } from "@/lib/import/validators";
 import type { CalcSummary, ImportResult, RawRow, FieldMapping } from "@/lib/import/types";
 
+export const dynamic = "force-dynamic";
+
 const fieldMappingSchema = z.object({
   sourceColumn: z.string(),
   destinationField: z.string().nullable(),
