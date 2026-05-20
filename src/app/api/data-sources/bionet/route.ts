@@ -2,6 +2,8 @@ import { auth } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 import { fetchThreatenedSpecies } from "@/lib/data-sources";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req: NextRequest) {
   const session = await auth();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

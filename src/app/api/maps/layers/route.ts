@@ -3,6 +3,8 @@ import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   const session = await auth();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -36,6 +38,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
   }
 
-  const layer = await db.mapLayer.create({ data: parsed.data });
+  const layer = await db.mapLayer.create({
+    data: {
+      ...parsed.data,
+      sourceConfig: parsed.data.sourceConfig as any,
+      layerConfig: parsed.data.layerConfig as any,
+    },
+  });
   return NextResponse.json({ data: layer }, { status: 201 });
 }

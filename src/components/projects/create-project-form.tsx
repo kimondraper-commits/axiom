@@ -11,6 +11,7 @@ import {
   COMMERCIAL_DENSITY_M2,
   RETAIL_SPEND_PER_PERSON,
 } from "@/lib/reference-data";
+import { buildComplianceItems } from "@/lib/compliance-check";
 
 const NSW_LGAS = [
   "Albury", "Armidale Regional", "Ballina", "Balranald", "Bathurst Regional",
@@ -276,28 +277,7 @@ export function CreateProjectForm() {
       const projectId = data.data.id;
 
       const complianceLabels = getComplianceItems(fields.projectType);
-      const complianceItems = complianceLabels.map((label, i) => {
-        const item: { label: string; sortOrder: number; flagged?: boolean; notes?: string } = { label, sortOrder: i };
-        if (siteSummary) {
-          if (label.toLowerCase().includes("bushfire") && siteSummary.bushfire) {
-            item.flagged = true;
-            item.notes = `GIS: ${siteSummary.bushfire}`;
-          }
-          if (label.toLowerCase().includes("flood") && siteSummary.floodRisk) {
-            item.flagged = true;
-            item.notes = `GIS: ${siteSummary.floodRisk}`;
-          }
-          if (label.toLowerCase().includes("heritage") && siteSummary.heritage) {
-            item.flagged = true;
-            item.notes = `GIS: ${siteSummary.heritage}`;
-          }
-          if (label.toLowerCase().includes("contamination") && siteSummary.acidSulfate) {
-            item.flagged = true;
-            item.notes = `GIS: Acid Sulfate Soils — ${siteSummary.acidSulfate}`;
-          }
-        }
-        return item;
-      });
+      const complianceItems = buildComplianceItems(complianceLabels, siteSummary);
       await fetch(`/api/projects/${projectId}/compliance`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

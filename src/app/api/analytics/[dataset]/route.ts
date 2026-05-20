@@ -2,6 +2,8 @@ import { auth } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 import { fetchBuildingApprovals, fetchPopulation } from "@/lib/data-sources";
 
+export const dynamic = "force-dynamic";
+
 // --- Fallback generators (used when live API is unavailable) ---
 
 function fallbackPermitData() {

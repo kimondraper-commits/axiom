@@ -3,6 +3,8 @@ import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
+export const dynamic = "force-dynamic";
+
 type Params = { params: Promise<{ id: string; submissionId: string }> };
 
 const patchSchema = z.object({

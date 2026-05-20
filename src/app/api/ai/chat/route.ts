@@ -1,10 +1,16 @@
 import { auth } from "@/lib/auth";
 import { anthropic, buildSystemPrompt } from "@/lib/anthropic";
 import type { SiteConstraints } from "@/lib/anthropic";
+import { TOOLS, executeTool } from "@/lib/ai-tools";
 import { aiRatelimit } from "@/lib/redis";
 import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import type { MessageParam, ContentBlockParam } from "@anthropic-ai/sdk/resources/messages";
+
+export const dynamic = "force-dynamic";
+
+const MAX_TOOL_ROUNDS = 5;
 
 const bodySchema = z.object({
   messages: z.array(z.object({ role: z.enum(["user", "assistant"]), content: z.string() })),
@@ -47,7 +53,13 @@ export async function POST(req: NextRequest) {
   if (projectId) {
     const project = await db.project.findUnique({
       where: { id: projectId },
-      select: { title: true, city: true, district: true, status: true, phase: true, description: true, address: true },
+      select: {
+        title: true, city: true, district: true, status: true, phase: true,
+        description: true, address: true, projectType: true, lga: true,
+        dwellings: true, commercialGfa: true, buildingHeight: true, storeys: true,
+        carParking: true, siteAreaHa: true, constructionCostM: true, greenSpaceHa: true,
+        complianceItems: { where: { notes: { not: "" } }, select: { label: true, checked: true, notes: true } },
+      },
     });
     if (project) {
       projectContext = {
@@ -127,7 +139,13 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  // Stream from Anthropic
+  // Build the Anthropic messages array
+  const anthropicMessages: MessageParam[] = messages.map((m) => ({
+    role: m.role,
+    content: m.content,
+  }));
+
+  // Stream from Anthropic with tool-use loop
   const encoder = new TextEncoder();
   const stream = new ReadableStream({
     async start(controller) {
@@ -139,24 +157,76 @@ export async function POST(req: NextRequest) {
       );
 
       try {
-        const anthropicStream = anthropic.messages.stream({
-          model: "claude-sonnet-4-6",
-          max_tokens: 2048,
-          system: systemPrompt,
-          messages: messages.map((m) => ({ role: m.role, content: m.content })),
-        });
+        let toolRound = 0;
 
-        for await (const event of anthropicStream) {
-          if (
-            event.type === "content_block_delta" &&
-            event.delta.type === "text_delta"
-          ) {
-            const text = event.delta.text;
-            fullContent += text;
-            controller.enqueue(
-              encoder.encode(`data: ${JSON.stringify({ type: "text", text })}\n\n`)
-            );
+        while (toolRound < MAX_TOOL_ROUNDS) {
+          const response = await anthropic.messages.create({
+            model: "claude-sonnet-4-6",
+            max_tokens: 4096,
+            system: systemPrompt,
+            messages: anthropicMessages,
+            tools: TOOLS,
+          });
+
+          // Process response content blocks
+          let hasToolUse = false;
+          const assistantContent: ContentBlockParam[] = [];
+
+          for (const block of response.content) {
+            if (block.type === "text") {
+              fullContent += block.text;
+              assistantContent.push(block);
+              // Stream the text to the client
+              controller.enqueue(
+                encoder.encode(`data: ${JSON.stringify({ type: "text", text: block.text })}\n\n`)
+              );
+            } else if (block.type === "tool_use") {
+              hasToolUse = true;
+              assistantContent.push(block);
+
+              // Notify client that a tool is being used
+              controller.enqueue(
+                encoder.encode(
+                  `data: ${JSON.stringify({ type: "tool_use", tool: block.name, id: block.id })}\n\n`
+                )
+              );
+
+              // Execute the tool
+              const toolResult = await executeTool(
+                block.name,
+                block.input as Record<string, unknown>
+              );
+
+              // Notify client the tool finished
+              controller.enqueue(
+                encoder.encode(
+                  `data: ${JSON.stringify({ type: "tool_result", tool: block.name, id: block.id })}\n\n`
+                )
+              );
+
+              // Add assistant message and tool result to conversation
+              anthropicMessages.push({ role: "assistant", content: assistantContent.slice() });
+              anthropicMessages.push({
+                role: "user",
+                content: [
+                  {
+                    type: "tool_result",
+                    tool_use_id: block.id,
+                    content: toolResult,
+                  },
+                ],
+              });
+            }
           }
+
+          // If no tool use, we're done — the model gave a final text answer
+          if (!hasToolUse) {
+            break;
+          }
+
+          // If the last block was text after tool uses, we already streamed it.
+          // If the model only returned tool_use blocks, loop to get the text response.
+          toolRound++;
         }
 
         // Persist assistant response

@@ -148,7 +148,40 @@
 
 ---
 
-## Phase 9: Tier 4 (Documentation Only)
+## Phase 9: QA, Polish & AI Context Injection
+
+### Pre-work: Fix TS errors [DONE]
+- [x] `src/lib/auth.ts:40` — adapter type mismatch → cast with `as any`
+- [x] `src/app/api/maps/layers/route.ts:39` — Prisma JsonNull → cast `sourceConfig`/`layerConfig` as any
+- [x] All API routes → `export const dynamic = "force-dynamic"` for Next.js 16 build compat
+- [x] Login page → Suspense boundary for `useSearchParams()`
+- [x] `npx tsc --noEmit` — 0 errors
+- [x] `npm run build` — passes clean
+
+### 9A — Error Boundaries & Loading States [DONE]
+- [x] Global error boundary: `src/app/(dashboard)/error.tsx`
+- [x] Reusable skeleton components: `src/components/ui/skeleton.tsx`
+- [x] 15 page-level `loading.tsx` files with appropriate skeletons:
+  - overview, maps, analytics, projects, assistant, calculators
+  - acquisitions, live-das, submissions, biodiversity
+  - climate-risk, community-impact, import, readiness, subsurface
+
+### 9B — AI Context Injection [DONE — was already implemented]
+- [x] `/api/ai/chat/route.ts` already fetches project context + GIS constraints
+- [x] `buildSystemPrompt()` already injects zone, height, FSR, heritage, hazards
+- [x] Enhanced: now includes proposal metrics (dwellings, GFA, height, etc.)
+- [x] Enhanced: now includes compliance flags with notes from GIS
+
+### 9C — Parcel Query Enhancement [DONE — was already implemented]
+- [x] `/api/maps/parcels` already returns: HOB, FSR, heritage, bushfire, flood, acid sulfate
+
+### 9D — Compliance Auto-Flagging [DONE]
+- [x] Created `src/lib/compliance-check.ts` with `isRisk()` smart filtering
+- [x] Wired into `create-project-form.tsx` via `buildComplianceItems()`
+- [x] Filters "Not applicable" / "N/A" / "No data" values (no longer false-flags)
+- [x] Also enriches non-flagged items with GIS notes (zone, height, FSR)
+
+## Future: Tier 4 (Documentation Only)
 - [ ] Document planned integrations for presentation: DBYD, NSWLRS, Ausgrid/Sydney Water, AURIN, Nearmap, CoreLogic, G-NAF
 
 ## Environment Variables Needed
@@ -157,3 +190,119 @@ SILO_API_KEY=           # Free from longpaddock.qld.gov.au
 NSW_EPLANNING_API_KEY=  # Free from api.nsw.gov.au
 TFNSW_API_KEY=          # Free from opendata.transport.nsw.gov.au
 ```
+
+---
+
+# 🚀 ACTIVE SPRINT: Mosaic Integration (started 2026-04-07)
+
+> **Application submitted to Mecone:** 2026-04-06. Velocity = MAX.
+> **Strategy doc:** `tasks/mosaic-integration-plan.md`
+> **PDF brief:** `~/Desktop/AXIOM-Mosaic-Plan.pdf`
+
+## Locked decisions
+- ✅ Sprint order: Phase A → B → C → D
+- ✅ NSW only
+- ✅ Workbench BYO datasets integrated into existing import wizard
+- ✅ AIM v1: 5 sieve rules (zone, height, FSR, lot size, station distance)
+- ✅ Site PDF reports: ALL sections
+- ✅ No Nearmap/MetroMap → use OSM/Mapbox satellite tiles
+- ✅ AIM saved searches: per-user
+
+## PHASE A — Map Power-Up ✅ SHIPPED 2026-04-07
+
+### A.0 — Recon ✅
+- [x] Read current `/maps` page implementation
+- [x] Read `MapContainer` and `LayerPanel` components
+- [x] Identify reusable pieces vs what needs replacing
+
+### A.1 — Vertical icon rail refactor ✅
+- [x] `MapToolRail` component (`map-tool-rail.tsx`)
+- [x] Tools: Layers · 3D · Draw · Measure · Isochrone · Basemap · Screenshot · Fullscreen
+- [x] Tooltip on hover, active state styling
+
+### A.2 — Pill-toggle layer panel redesign ✅
+- [x] New `LayersPanel` (`panel-layers.tsx`) with pill-toggle rows
+- [x] Status dot · label · info icon hover · 24px row
+- [x] Grouped by category (Cadastre, Planning, Transport, Environmental, Housing)
+- [x] Search input at top
+- [x] Active layer count badge
+
+### A.3 — 3D mode + 3D buildings ✅
+- [x] Pitch + bearing controls (eased to 60°/-20° on toggle)
+- [x] Mapbox `fill-extrusion` 3D buildings layer
+- [x] 3D toggle button in tool rail
+
+### A.4 — Drawing tools ✅
+- [x] Installed `@mapbox/mapbox-gl-draw`
+- [x] `DrawControl` wrapper component using `useControl`
+- [x] Custom AXIOM-themed draw styles (green dashed lines, transparent fills)
+- [x] `DrawPanel` with Line + Polygon modes
+- [x] Feature counter, GeoJSON export, clear all
+- [x] (Circle dropped — not built into mapbox-gl-draw, would need plugin)
+
+### A.5 — Measurement tool ✅
+- [x] Distance + area modes via Turf.js
+- [x] `MeasurePanel` with mode selector and live result card
+- [x] Auto-formatted units (m → km, m² → ha → km²)
+- [x] Click vertices, real-time calculation
+
+### A.6 — Isochrone tool ✅
+- [x] Mapbox Isochrone API integration
+- [x] `IsochronePanel` with mode selector (walk/cycle/drive)
+- [x] Time presets (5, 10, 15 min, or 5/10/15 concentric)
+- [x] Click map to set origin → green marker
+- [x] Concentric polygons rendered with graduated green fills
+
+### A.7 — Basemap selector ✅
+- [x] `BasemapPanel` with 5 styles: Dark · Streets · Satellite · Light · Outdoors
+- [x] Visual previews with gradient thumbnails
+- [x] Smooth swap
+
+### A.8 — Verify Phase A ✅
+- [x] `npx tsc --noEmit` clean
+- [x] Dev server compiles `/maps` in 1.3s
+- [x] HTTP 200 response
+- [ ] Manual test every tool in browser (← waiting on Kimon)
+- [ ] Before/after screenshots
+
+### Files added in Phase A
+- `src/components/maps/icons.tsx` (15 inline SVG icons)
+- `src/components/maps/slide-over-panel.tsx` (reusable panel wrapper)
+- `src/components/maps/map-tool-rail.tsx` (vertical icon rail)
+- `src/components/maps/panel-layers.tsx` (new layers panel)
+- `src/components/maps/panel-basemap.tsx` (basemap selector)
+- `src/components/maps/panel-draw.tsx` (drawing tool panel)
+- `src/components/maps/panel-measure.tsx` (measurement panel)
+- `src/components/maps/panel-isochrone.tsx` (isochrone panel)
+- `src/components/maps/draw-control.tsx` (mapbox-gl-draw wrapper)
+- `src/components/maps/map-container.tsx` (REFACTORED orchestrator, ~600 lines)
+
+## PHASE B — AIM Site Finder ✅ SHIPPED 2026-04-12
+
+- [x] B.1 ArcGIS query engine (`lib/arcgis-query.ts`) — queries EPI sublayers with WHERE + bbox
+- [x] B.2 Station distance filter (`lib/aim/station-filter.ts`) — turf.js proximity to 270 stations
+- [x] B.3 CSV export (`lib/aim/csv-export.ts`) — GeoJSON → CSV via papaparse
+- [x] B.4 AIM search API (`/api/aim/search`) — POST, accepts bbox + rules, queries ArcGIS in parallel
+- [x] B.5 Saved searches API (`/api/aim/saved`) — GET/DELETE per-user
+- [x] B.6 Prisma `AimSearch` + `UserDataset` models (created via SQL + Prisma generate)
+- [x] B.7 `/aim` page with split view (rules left, map right)
+- [x] B.8 AIM Finder component — zone multi-select, height/FSR/distance filters, result count, CSV export, save/load
+- [x] B.9 Sidebar nav updated (AIM + planned Workbench)
+- [x] B.10 Build verified — HTTP 200 in 600ms
+
+## PHASE C — Data & Reports ✅ SHIPPED 2026-04-12
+
+- [x] C.1 Property Valuations API (`/api/maps/valuations`) — SIX Maps land values via identify
+- [x] C.2 KML Parser (`lib/import/parsers-kml.ts`) — KML→GeoJSON via @tmcw/togeojson
+- [x] C.2 Workbench page + panel + datasets API — upload KML/GeoJSON, save to DB, render on map
+- [x] C.2 UserDataset Prisma model + API CRUD (`/api/datasets`)
+- [x] C.3 Site PDF Report (`lib/reports/site-report.tsx` + `/api/reports/site`) — @react-pdf/renderer
+- [x] C.4 DA Snapshot PDF (`lib/reports/da-snapshot.tsx` + `/api/reports/da-snapshot`)
+- [x] C.5 TSC clean, Workbench HTTP 200 in 3.3s
+
+## PHASE D — Polish ✅ SHIPPED 2026-04-12
+
+- [x] Inline "NEW FEATURE" callout card in layers panel (links to /aim)
+- [x] `EmptyState` reusable component (`components/ui/empty-state.tsx`)
+- [x] `ProGateModal` component (`components/ui/pro-gate-modal.tsx`) — Radix Dialog, AXIOM Pro branding
+- [ ] Final demo recording (Loom) — waiting on Kimon
